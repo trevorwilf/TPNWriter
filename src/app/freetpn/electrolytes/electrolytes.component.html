@@ -1,0 +1,86 @@
+<form [formGroup]="ElectrolyteInfo">
+    <div class="d-flex flex-row flex-wrap">
+        <div class="pr-1">
+            <mat-form-field class="small">
+                <input matInput placeholder="Sodium" formControlName="sodium" required>
+            </mat-form-field>
+            <mat-form-field class="small">
+                <mat-select placeholder="Unit" formControlName="sodiumunit">
+                    <mat-option *ngFor="let electro of electorlyteunits" [value]="electro.longname">
+                        {{electro.longname}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="d-flex flex-row flex-wrap">
+        <div class="pr-1">
+            <mat-form-field class="small">
+                <input matInput placeholder="potassium" formControlName="potassium" required>
+            </mat-form-field>
+            <mat-form-field class="small">
+                <mat-select placeholder="Unit" formControlName="potassiumunit">
+                    <mat-option *ngFor="let electro of electorlyteunits" [value]="electro.longname">
+                        {{electro.longname}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="d-flex flex-row flex-wrap">
+        <div class="pr-1">
+            <mat-form-field class="small">
+                <input matInput placeholder="calcium" formControlName="calcium" required>
+            </mat-form-field>
+            <mat-form-field class="small">
+                <mat-select placeholder="Unit" formControlName="calciumunit">
+                    <mat-option *ngFor="let electro of electorlyteunits" [value]="electro.longname">
+                        {{electro.longname}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="d-flex flex-row flex-wrap">
+        <div class="pr-1">
+            <mat-form-field class="small">
+                <input matInput placeholder="phosphorus" formControlName="phosphorus" required>
+            </mat-form-field>
+            <mat-form-field class="small">
+                <mat-select placeholder="Unit" formControlName="phosphorusunit">
+                    <mat-option *ngFor="let electro of electorlyteunits" [value]="electro.longname">
+                        {{electro.longname}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="d-flex flex-row flex-wrap">
+        <div class="pr-1">
+            <mat-form-field class="small">
+                <input matInput placeholder="acetate" formControlName="acetate" required>
+            </mat-form-field>
+            <mat-form-field class="small">
+                <mat-select placeholder="Unit" formControlName="acetateunit">
+                    <mat-option *ngFor="let electro of electorlyteunits" [value]="electro.longname">
+                        {{electro.longname}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="d-flex flex-row flex-wrap">
+        <div class="pr-1">
+            <mat-form-field class="small">
+                <input matInput placeholder="magnesium" formControlName="magnesium" required>
+            </mat-form-field>
+            <mat-form-field class="small">
+                <mat-select placeholder="Unit" formControlName="magnesiumunit">
+                    <mat-option *ngFor="let electro of electorlyteunits" [value]="electro.longname">
+                        {{electro.longname}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+</form>

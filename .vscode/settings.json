@@ -1,0 +1,45 @@
+{
+    "typescript.tsdk": "node_modules/typescript/lib/",
+
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/app/**/*.js": true,
+        "**/*.map": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/.gitignore": true
+    },
+    // Controls auto save of dirty files. Accepted values:  "off", "afterDelay", "onFocusChange". If set to "afterDelay" you can configure the delay in "files.autoSaveDelay".
+    "files.autoSaveDelay": 2000,
+    "files.autoSave": "afterDelay",
+
+    "beautify.language": {
+        "js": {
+            "type": [
+                "javascript",
+                "json"
+            ],
+            "filename": [
+                ".jshintrc",
+                ".jsbeautify"
+            ],
+            "ext": ["js", "json", "ts"]
+            },
+          "css": [
+              "css",
+              "scss"
+          ],
+          "html": [
+              "htm",
+              "html"
+          ],
+          // "ts": {
+          //   "type": [
+          //       "typescript"
+          //   ],
+          //   "ext": ["ts"]
+          //   },
+          "sql": ["sql"]
+    }
+}

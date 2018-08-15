@@ -1,0 +1,60 @@
+mat-form-field.mat-form-field {
+  font-size: 12px;
+}
+
+i { display: block; margin: 0 10px; }
+
+mat-icon.mat-icon {
+  display: block; margin: 0 10px;
+}
+
+i.fa-times-circle {
+  color: red;
+}
+
+i.fa-check-circle-o {
+  color: rgb(10, 199, 10);
+}
+
+
+.ui-multiselect-label-container {
+  background-color: rgb(20, 14, 14) !important;
+}
+
+label {
+  margin-top: 0px;
+}
+
+button {
+  margin-top: 1em;
+}
+
+p-radioButton {
+ display:block;
+ margin: .7em;
+}
+
+p-listbox >>> .ui-listbox {
+ width: 100%;
+height: 300px;
+}
+
+.avatar {
+ float: left;
+ margin: 5px;
+}
+
+.devName {
+ font-size: xx-large;
+ display:inline-block;
+ margin:15px 10px 0 10px;
+ min-height: 100px;
+}
+
+p-rating {
+ font-size: xx-large;
+}
+
+#ratingLabel {
+ margin-top: 20px;
+}

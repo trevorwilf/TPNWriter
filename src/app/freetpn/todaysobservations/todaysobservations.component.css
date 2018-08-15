@@ -1,0 +1,27 @@
+mat-form-field.mat-form-field {
+  font-size: 12px;
+}
+
+mat-radio-button.mat-radio-button  {
+  padding-right: 16px;
+}
+
+mat-form-field.mat-form-field {
+  font-size: 12px;
+  max-width: 150px;
+}
+
+mat-form-field.small {
+  font-size: 12px;
+  max-width: 100px;
+}
+
+mat-form-field.medium {
+  max-width: 125;
+  font-size: 12px;
+}
+
+mat-form-field.units {
+  max-width: 75px;
+  font-size: 12px;
+}

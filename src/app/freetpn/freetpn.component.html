@@ -1,0 +1,127 @@
+<mat-tab-group class="md-tab-group">
+    <mat-tab label="Free TPN">
+        <div class="md-tab-content">
+            <mat-accordion [multi]="true">
+
+                <mat-expansion-panel label="Patient Info">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Patient Info
+                        </mat-panel-title>
+                        <div *ngIf="PatientInfo && !PatientInfo.required">
+                          <mat-panel-description>
+                              <i class="fa fa-times-circle" aria-hidden="true"> Incorrect or required data</i>
+                            </mat-panel-description>
+                        </div>
+                        <div *ngIf="PatientInfo && PatientInfo.required">
+                          <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                        </div>
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </mat-expansion-panel-header>
+                    <app-patientinfo></app-patientinfo>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel label="Todays Observations">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Todays Observations
+                        </mat-panel-title>
+                        <div *ngIf="TodaysInfo && !TodaysInfo.required">
+                            <mat-panel-description>
+                                <i class="fa fa-times-circle" aria-hidden="true"> Incorrect or required data</i>
+                              </mat-panel-description>
+                          </div>
+                          <div *ngIf="TodaysInfo && TodaysInfo.required">
+                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                          </div>
+                        <i class="fa fa-flask" aria-hidden="true">  </i>
+                    </mat-expansion-panel-header>
+                    <app-todaysobservations></app-todaysobservations>
+                </mat-expansion-panel>
+                <mat-expansion-panel label="Fluids">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Fluids
+                        </mat-panel-title>
+                        <div *ngIf="FluidsInfo && !FluidsInfo.required">
+                            <mat-panel-description>
+                                <i class="fa fa-times-circle" aria-hidden="true"> Incorrect or required data</i>
+                              </mat-panel-description>
+                          </div>
+                          <div *ngIf="FluidsInfo && FluidsInfo.required">
+                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                          </div>
+                        <i class="fa fa-tint" aria-hidden="true"></i>
+                    </mat-expansion-panel-header>
+                    <app-fluids></app-fluids>
+                </mat-expansion-panel>
+                <mat-expansion-panel label="Macro">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Macro
+                        </mat-panel-title>
+                        <div *ngIf="macroInfo && !macroInfo.required">
+                            <mat-panel-description>
+                                <i class="fa fa-times-circle" aria-hidden="true"> Incorrect or required data</i>
+                              </mat-panel-description>
+                          </div>
+                          <div *ngIf="macroInfo && macroInfo.required">
+                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                          </div>
+                        <mat-icon>account_circle</mat-icon>
+                    </mat-expansion-panel-header>
+                    <app-macros></app-macros>
+                </mat-expansion-panel>
+                <mat-expansion-panel label="Electrolytes">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Electrolytes
+                        </mat-panel-title>
+                        <div *ngIf="electrolyteInfo && !electrolyteInfo.required">
+                            <mat-panel-description>
+                                <i class="fa fa-times-circle" aria-hidden="true"> Incorrect or required data</i>
+                              </mat-panel-description>
+                          </div>
+                          <div *ngIf="electrolyteInfo && electrolyteInfo.required">
+                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                          </div>
+                        <mat-icon>account_circle</mat-icon>
+                    </mat-expansion-panel-header>
+                    <app-electrolyte></app-electrolyte>
+                </mat-expansion-panel>
+                <mat-expansion-panel label="Additives">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Other Additives
+                        </mat-panel-title>
+                        <div *ngIf="additiveInfo && !additiveInfo.required">
+                            <mat-panel-description>
+                                <i class="fa fa-times-circle" aria-hidden="true"> Incorrect or required data</i>
+                              </mat-panel-description>
+                          </div>
+                          <div *ngIf="additiveInfo && additiveInfo.required">
+                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                          </div>
+                        <mat-icon>account_circle</mat-icon>
+                    </mat-expansion-panel-header>
+                    <app-additive></app-additive>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+    </mat-tab>
+
+
+    <mat-tab label="Writer Info">
+        <div class="demo-tab-content">
+            <app-userinfo></app-userinfo>
+        </div>
+    </mat-tab>
+    <mat-tab label="TPN Settings">
+        <div class="demo-tab-content">
+            <app-userpreferences></app-userpreferences>
+        </div>
+    </mat-tab>
+</mat-tab-group>
+<br>
+<br>
+<br>

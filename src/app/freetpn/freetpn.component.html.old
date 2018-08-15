@@ -1,0 +1,31 @@
+<mat-tab-group class="md-tab-group">
+    <mat-tab label="Free TPN">
+        <div class="md-tab-content">
+            <mat-vertical-stepper [linear]="isLinear">
+                <mat-step [stepControl]="PatientInfo" label="Patient Info">
+                  <app-patientinfo></app-patientinfo>
+                </mat-step>
+                <mat-step [stepControl]="TodaysInfo" label="Todays Observations">
+                    <app-todaysobservations></app-todaysobservations>
+                </mat-step>
+                <mat-step [stepControl]="Fluids" label="Fluids">place holder</mat-step>
+                <mat-step [stepControl]="Macro" label="Macro">place holder</mat-step>
+                <mat-step [stepControl]="Electrolytes" label="Electrolytes">place holder</mat-step>
+            </mat-vertical-stepper>
+        </div>
+    </mat-tab>
+    <mat-tab label="Writer Info">
+        <div class="demo-tab-content">
+            <app-userinfo></app-userinfo>
+        </div>
+    </mat-tab>
+    <mat-tab label="TPN Settings">
+        <div class="demo-tab-content">
+            place holder for settings
+        </div>
+    </mat-tab>
+</mat-tab-group>
+
+<br>
+<br>
+<br>

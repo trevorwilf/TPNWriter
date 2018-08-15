@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "tpnwriter",
+    "tpnwriterdev": "tpnwriterdev"
+  }
+}

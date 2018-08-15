@@ -1,0 +1,97 @@
+<form [formGroup]="MacrosInfo">
+
+<div class="d-flex flex-row flex-wrap">
+    <div class="pr-1">
+        <mat-form-field class="medium">
+            <mat-select placeholder="Energy Equation" formControlName="calEquation">
+                <mat-option *ngFor="let equat of energyequationlist" [value]="equat.longname">
+                    {{equat.longname}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+  </div>
+  <div class="d-flex flex-row flex-wrap">
+    <div class="pr-1">
+        <br>Total KCal Goal: {{MacrosInfo.get('energyrequirementMin').value}}
+        <br>kCal/kg/day: {{this.MacrosInfo.controls['calsperkgperday'].value}}
+        <br>Protein Goal gm/kg/day: {{MacrosInfo.get('proteingoalMin').value}}
+    </div>
+</div>
+
+<!-- Carb Source -->
+<div class="d-flex flex-row flex-wrap">
+  <div class="pr-1">
+    <mat-radio-group formControlName="useGIR">
+      <mat-radio-button *ngFor="let carb of carbsourcelist" [value]="carb.name">
+        {{carb.name}}
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+</div>
+<div class="d-flex flex-row flex-wrap">
+  <div class="pr-1">
+      <!-- GIR -->
+      <div *ngIf="MacrosInfo.get('useGIR').value == 'GIR'">
+          <mat-form-field class="small">
+              <input matInput placeholder="GIR (mg/kg/min)" formControlName="GIR" required>
+          </mat-form-field>
+          <p>Dextrose%: D{{MacrosInfo.get('dextrose').value}}
+      </div>
+      <!-- Dextrose -->
+      <div *ngIf="MacrosInfo.get('useGIR').value == 'Dextrose'">
+          <mat-form-field class="small">
+              <input matInput placeholder="Dextrose %" formControlName="dextrose" required>
+          </mat-form-field>
+          <p>GIR (mg/kg/min): {{MacrosInfo.get('GIR').value}}
+      </div>
+  </div>
+</div>
+
+<!-- Protein Source -->
+<div class="d-flex flex-row flex-wrap">
+    <div class="pr-1">
+        <mat-form-field class="small">
+            <input matInput placeholder="protein (gm/kg/day)" formControlName="protein" required>
+        </mat-form-field>
+    </div>
+</div>
+<div class="d-flex flex-row flex-wrap">
+    <div class="pr-1">
+        <mat-form-field class="small">
+            <input matInput placeholder="cystein" formControlName="cystein" required>
+        </mat-form-field>
+    </div>
+</div>
+
+<!-- Lipid Source -->
+<div class="d-flex flex-row flex-wrap">
+    <div class="pr-1">
+        <mat-form-field class="small">
+            <mat-select placeholder="lipidSource" formControlName="lipidSource">
+                <mat-option *ngFor="let lipids of lipidsourcelist" [value]="lipids.name">
+                    {{lipids.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="pr-1">
+        <mat-form-field class="units">
+            <mat-select placeholder="lipid %" formControlName="lipidPercent">
+                <mat-option *ngFor="let lipidp of lipidPercentlist" [value]="lipidp.percent">
+                    {{lipidp.percent}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+<div class="d-flex flex-row flex-wrap">
+    <div class="pr-1">
+        <mat-form-field class="small">
+            <input matInput placeholder="lipids gm/kg/day" formControlName="lipids" required>
+        </mat-form-field>
+    </div>
+</div>
+
+
+</form>

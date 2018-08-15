@@ -1,0 +1,11 @@
+<input type="file" accept=".csv" (change)="csv2Array($event)">
+<br>
+<button (click)="httpcsv2Array($event)">Import From Google Sheets</button>
+<br><br>
+<input #search class="search" type="text" placeholder="Search..." (keydown.enter)="onSearch(search.value)">
+<ng2-smart-table [settings]="Lipidsngtable"
+                 [source]="localDataSource"
+                 (createConfirm)="onCreateConfirm($event)"
+                 (deleteConfirm)="onDeleteConfirm($event)"
+                 (editConfirm)="onSaveConfirm($event)">
+</ng2-smart-table>

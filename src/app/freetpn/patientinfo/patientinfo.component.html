@@ -1,0 +1,139 @@
+<form [formGroup]="PatientInfo">
+    <div class="d-flex">
+  <div class="d-flex flex-column">
+    <div class="d-flex flex-row flex-wrap">
+        <div class="pr-1">
+            <mat-form-field>
+                <input matInput placeholder="First name" formControlName="given">
+            </mat-form-field>
+        </div>
+        <div class="pr-1">
+            <mat-form-field>
+                <input matInput placeholder="Last name" formControlName="family">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="d-flex flex-row flex-wrap">
+        <div class="pr-1">
+            <mat-form-field class="small">
+                <input matInput placeholder="MRN #" formControlName="MRN">
+            </mat-form-field>
+        </div>
+        <div class="pr-1" class="small">
+            <mat-form-field>
+                <input matInput placeholder="CSN #" formControlName="CSN">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="d-flex flex-row">
+        <div class="pr-1">
+            <mat-form-field class="small">
+                <input matInput placeholder="Room Number" formControlName="roomnumber">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="d-flex flex-row flex-wrap">
+        <div class="pr-1">
+            <mat-form-field class="units">
+                <mat-select placeholder="Gender" formControlName="gender">
+                    <mat-option *ngFor="let g of genderlist" [value]="g.sex">
+                        {{g.sex}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="d-flex flex-row">
+        <div class="pr-1">
+            <mat-form-field class="small">
+                <input matInput placeholder="Height" formControlName="height">
+            </mat-form-field>
+        </div>
+        <div class="pr-1">
+            <mat-form-field class="units">
+                <mat-select placeholder="units" formControlName="heightunits">
+                    <mat-option *ngFor="let g of lenghthunits" [value]="g.unit">
+                        {{g.unit}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="d-flex flex-row">
+        <div class="pr-1">
+            <div>
+                <mat-form-field>
+                    <input matInput [matDatepicker]="picker" placeholder="Birth Date" formControlName="birthDate" [max]="maxDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker startView="year"></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="PatientInfo.get('birthDate').touched &&
+                PatientInfo.get('daysofLife').value < 30">
+        <div class="d-flex flex-row flex-wrap">
+            <div class="d-inline-flex  pr-1">
+                <label for="birthTimed" class="d-flex align-items-center">Time of Birth</label>
+                <p-calendar [showIcon]="false" id="birthTime" formControlName="birthTime" [timeOnly]="true" class="ui-g-4"></p-calendar>
+            </div>
+        </div>
+        <div class="d-flex flex-row flex-wrap">
+            <div class="pr-1>">
+                <mat-form-field>
+                    <input matInput placeholder="Gestational Age week" formControlName="gestationalAge">
+                </mat-form-field>
+            </div>
+            <div class="pr-1>">
+              <mat-form-field>
+                  <mat-select placeholder="Gestational Age day" formControlName="gestationalAgeDay">
+                    <mat-option *ngFor="let day of fractiondayofweek" [value]="day.dayofweek">
+                        {{day.dayofweek}}
+                    </mat-option>
+                </mat-select>
+              </mat-form-field>
+          </div>
+        </div>
+        <div class="d-flex flex-row flex-wrap">
+            <div class="pr-1">
+                <mat-form-field class="units">
+                    <input matInput placeholder="Birth Weight" formControlName="birthWeight">
+                </mat-form-field>
+            </div>
+
+            <mat-form-field class="units">
+                <mat-select placeholder="Birth Weight Unit" formControlName="bodyweightunits">
+                    <mat-option *ngFor="let weight of weightunits" [value]="weight.longname">
+                        {{weight.longname}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="d-flex flex-row flex-wrap">
+        <div class="pr-1">
+            <mat-form-field>
+                <mat-select placeholder="Stresser" formControlName="stressers">
+                    <mat-option *ngFor="let stressor of stressorslist | async" [value]="stressor.stressname">
+                        {{stressor.stressname}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="pr-1>">
+        </div>
+    </div>
+    <div class="d-flex flex-row">
+        <div class="pr-1">
+            <div>
+                <!-- <button mat-button matStepperNext  label="Next">
+                    <mat-icon aria-label="Example icon-button with a heart icon">done</mat-icon>
+                    Next
+                </button> -->
+            </div>
+        </div>
+    </div>
+  </div>
+  <div class="d-flex flex-column p-3"><p>Notes Section</p></div>
+</div>
+</form>

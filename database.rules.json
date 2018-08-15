@@ -1,0 +1,26 @@
+{
+  "rules": {
+    // jTMrE5X6vcQuMsGsCTm8v4ah1xo1
+    // ".read": "auth != null",
+    // ".write": "auth != null",
+    //
+    //
+    "globalsettings": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "ivroute": {
+        ".indexOn": ["sortorder", "ivroutename"]
+      },
+      "stresser": {
+        ".indexOn": ["sortorder", "stressname"]
+      }
+    },
+
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": "auth != null && auth.uid == $uid"
+      }
+    }
+  }
+}

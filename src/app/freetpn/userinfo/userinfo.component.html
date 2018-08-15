@@ -1,0 +1,32 @@
+<form [formGroup]="DieticianInfo" class="container no-gutters" *ngIf="userRef | async as user">
+    <div class="d-flex flex-row flex-wrap">
+        <div class="p-2">
+            <mat-form-field>
+                <input matInput placeholder="First name" formControlName="dieticianfirstName" required [(ngModel)]="user.fname">
+            </mat-form-field>
+        </div>
+        <div class="p-2">
+            <mat-form-field>
+                <input matInput placeholder="Last name" formControlName="dieticianlastName" required [(ngModel)]="user.lname">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="d-flex flex-row">
+        <div class="p-2">
+            <mat-form-field>
+                <input matInput placeholder="Phone Number" formControlName="dieticianphoneNumber" required [(ngModel)]="user.phone">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="d-flex flex-row">
+        <div class="p-2">
+            <mat-form-field>
+                <input matInput placeholder="Email Address" formControlName="dieticianemailAddress" [(ngModel)]="user.email">
+            </mat-form-field>
+        </div>
+    </div>
+    <button mat-button (click)="saveUser(user)">
+        <mat-icon aria-label="Finished=">done</mat-icon>
+        Done
+    </button>
+</form>

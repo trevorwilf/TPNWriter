@@ -1,0 +1,20 @@
+mat-form-field.mat-form-field {
+  font-size: 12px;
+  max-width: 150px;
+}
+
+mat-form-field.small {
+  max-width: 25px;
+}
+
+mat-form-field.medium {
+  max-width: 75px;
+}
+
+mat-form-field.units {
+  max-width: 75px;
+}
+
+.flex-row {
+  margin: 5px;
+}

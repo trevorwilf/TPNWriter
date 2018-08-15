@@ -1,0 +1,20 @@
+
+
+<div *ngIf="!auth.authState">
+    <div id="sidenav">
+        <p-menu #bigMenu [model]="menuItems" [style]="{'width':'130px'}"></p-menu>
+    </div>
+    <div id="sidenav-mini">
+        <p-menu #smallMenu [model]="miniMenuItems" [style]="{'width':'50px'}"></p-menu>
+    </div>
+</div>
+
+
+<div *ngIf="auth.authState">
+    <div id="sidenav">
+        <p-menu #bigMenu [model]="menuItemsauth" [style]="{'width':'130px'}"></p-menu>
+    </div>
+    <div id="sidenav-mini">
+        <p-menu #smallMenu [model]="miniMenuItemsauth" [style]="{'width':'50px'}"></p-menu>
+    </div>
+</div>

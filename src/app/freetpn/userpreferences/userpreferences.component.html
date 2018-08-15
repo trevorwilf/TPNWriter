@@ -1,0 +1,363 @@
+<form [formGroup]="PreferenceInfo" class="container no-gutters">
+    <!-- Weight related  {{PreferenceInfo.get('bodyweightunits').value}} -->
+    <div class="d-flex">
+        <div class="d-flex flex-row">
+            <div class="d-flex flex-column">
+              <p>General Units</p>
+                <div class="d-flex flex-row flex-wrap">
+                    <div class="pr-1">
+                        <mat-form-field>
+                            <mat-select placeholder="Body Weight Unit" formControlName="bodyweightunits">
+                                <mat-option *ngFor="let weight of weightunits" [value]="weight.longname">
+                                    {{weight.longname}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="d-flex flex-row flex-wrap">
+                    <div class="pr-1">
+                        <mat-form-field>
+                            <mat-select placeholder="Body Height Unit" formControlName="heightunits">
+                                <mat-option *ngFor="let length of lenghthunits" [value]="length.longname">
+                                    {{length.longname}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="d-flex flex-row flex-wrap">
+                    <div class="pr-1">
+                        <mat-form-field>
+                            <mat-select placeholder="Urine Output" formControlName="urineunits">
+                                <mat-option *ngFor="let vol of volumeunits" [value]="vol.longname">
+                                    {{vol.longname}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="d-flex flex-row flex-wrap">
+                    <div class="pr-1">
+                        <mat-form-field>
+                            <mat-select placeholder="GI LOss Unit" formControlName="gilossunits">
+                                <mat-option *ngFor="let vol of volumeunits" [value]="vol.longname">
+                                    {{vol.longname}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="d-flex flex-row flex-wrap">
+                    <div class="pr-1">
+                        <mat-form-field>
+                            <mat-select placeholder="Enteral Fluid Unit" formControlName="enteralVolumeunits">
+                                <mat-option *ngFor="let vol of volumeunits" [value]="vol.longname">
+                                    {{vol.longname}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="d-flex flex-row flex-wrap">
+                    <div class="pr-1">
+                        <mat-form-field>
+                            <mat-select placeholder="Drip Fluid Unit" formControlName="dripVolumeunit">
+                                <mat-option *ngFor="let vol of volumeunits" [value]="vol.longname">
+                                    {{vol.longname}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="d-flex flex-row flex-wrap">
+                    <div class="pr-1">
+                        <mat-form-field>
+                            <mat-select placeholder="TPN Fluid Volume Unit" formControlName="fluidVolumeunit">
+                                <mat-option *ngFor="let vol of volumeunits" [value]="vol.longname">
+                                    {{vol.longname}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column">
+            <p>Macro Defaults</p>
+                <div class="d-flex flex-row flex-wrap">
+                    <div class="pr-1">
+                        <mat-form-field>
+                            <mat-select placeholder="Energy Equation" formControlName="calEquation">
+                                <mat-option *ngFor="let equat of energyequationlist" [value]="equat.longname">
+                                    {{equat.longname}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="d-flex flex-row flex-wrap">
+                    <div class="pr-1">
+                        <mat-form-field>
+                            <mat-select placeholder="Carb Method" formControlName="useGIR">
+                                <mat-option *ngFor="let carb of carbsourcelist" [value]="carb.longname">
+                                    {{carb.longname}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="d-flex flex-row flex-wrap">
+                    <div class="pr-1">
+                        <mat-form-field>
+                            <mat-select placeholder="Lipid Source" formControlName="lipidSource">
+                                <mat-option *ngFor="let lip of lipidsourcelist" [value]="lip.longname">
+                                    {{lip.longname}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="d-flex flex-row flex-wrap">
+                    <div class="pr-1">
+                        <mat-form-field>
+                            <mat-select placeholder="Lipid Percent" formControlName="lipidPercent">
+                                <mat-option *ngFor="let lip of lipidPercentlist" [value]="lip.longname">
+                                    {{lip.longname}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      <div class="d-flex">
+        <div class="d-flex flex-row">
+            <div class="d-flex flex-column">
+              <p>Electrolyte Units</p>
+                    <div class="d-flex flex-row flex-wrap">
+                        <div class="pr-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Sodium Unit" formControlName="sodiumunit">
+                                    <mat-option *ngFor="let elect of electorlyteunits" [value]="elect.longname">
+                                        {{elect.longname}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row flex-wrap">
+                        <div class="pr-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Potassium Unit" formControlName="potassiumunit">
+                                    <mat-option *ngFor="let elect of electorlyteunits" [value]="elect.longname">
+                                        {{elect.longname}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row flex-wrap">
+                        <div class="pr-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Calcium Unit" formControlName="calciumunit">
+                                    <mat-option *ngFor="let elect of electorlyteunits" [value]="elect.longname">
+                                        {{elect.longname}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row flex-wrap">
+                        <div class="pr-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Phosphorus Unit" formControlName="phosphorusunit">
+                                    <mat-option *ngFor="let elect of electorlyteunits" [value]="elect.longname">
+                                        {{elect.longname}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row flex-wrap">
+                        <div class="pr-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Acetate Unit" formControlName="acetateunit">
+                                    <mat-option *ngFor="let elect of electorlyteunits" [value]="elect.longname">
+                                        {{elect.longname}}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row flex-wrap">
+                        <div class="pr-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Magesium Unit" formControlName="magnesiumunit">
+                                    <mat-option *ngFor="let elect of electorlyteunits" [value]="elect.longname">
+                                        {{elect.longname}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+                    <div class="d-flex flex-column">
+                        <p>Lab Units</p>
+                    <div class="d-flex flex-row flex-wrap">
+                        <div class="pr-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Sodium Lab Unit" formControlName="sodiumunitslab">
+                                    <mat-option *ngFor="let elect of electorlytlabseunits" [value]="elect.longname">
+                                        {{elect.longname}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row flex-wrap">
+                        <div class="pr-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Pottasium Unit" formControlName="potassiumunitslab">
+                                    <mat-option *ngFor="let elect of electorlytlabseunits" [value]="elect.longname">
+                                        {{elect.longname}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row flex-wrap">
+                        <div class="pr-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Chloride Unit" formControlName="chlorideunitslab">
+                                    <mat-option *ngFor="let elect of electorlytlabseunits" [value]="elect.longname">
+                                        {{elect.longname}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row flex-wrap">
+                        <div class="pr-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Bicorbonate Unit" formControlName="bicorbonateunitslab">
+                                    <mat-option *ngFor="let elect of electorlytlabseunits" [value]="elect.longname">
+                                        {{elect.longname}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row flex-wrap">
+                        <div class="pr-1">
+                            <mat-form-field>
+                                <mat-select placeholder="BUN Unit" formControlName="BUNunitslab">
+                                    <mat-option *ngFor="let elect of electorlytlabseunits" [value]="elect.longname">
+                                        {{elect.longname}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row flex-wrap">
+                        <div class="pr-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Creatine Unit" formControlName="creatineunitslab">
+                                    <mat-option *ngFor="let elect of electorlytlabseunits" [value]="elect.longname">
+                                        {{elect.longname}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row flex-wrap">
+                        <div class="pr-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Glucose Unit" formControlName="glucoseunitslab">
+                                    <mat-option *ngFor="let elect of electorlytlabseunits" [value]="elect.longname">
+                                        {{elect.longname}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row flex-wrap">
+                        <div class="pr-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Calcium Unit" formControlName="calciumunitslab">
+                                    <mat-option *ngFor="let elect of electorlytlabseunits" [value]="elect.longname">
+                                        {{elect.longname}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row flex-wrap">
+                        <div class="pr-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Phospate Unit" formControlName="phosphateunitslab">
+                                    <mat-option *ngFor="let elect of electorlytlabseunits" [value]="elect.longname">
+                                        {{elect.longname}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row flex-wrap">
+                        <div class="pr-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Magnesium Unit" formControlName="magnesiumunitslab">
+                                    <mat-option *ngFor="let elect of electorlytlabseunits" [value]="elect.longname">
+                                        {{elect.longname}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row flex-wrap">
+                        <div class="pr-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Pre Albumin Unit" formControlName="preabluminunitslab">
+                                    <mat-option *ngFor="let elect of electorlytlabseunits" [value]="elect.longname">
+                                        {{elect.longname}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row flex-wrap">
+                        <div class="pr-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Albumin Unit" formControlName="albuminunitslab">
+                                    <mat-option *ngFor="let elect of electorlytlabseunits" [value]="elect.longname">
+                                        {{elect.longname}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row flex-wrap">
+                        <div class="pr-1">
+                            <mat-form-field>
+                                <mat-select placeholder="Triglycerides Unit" formControlName="triglyceridesunitslab">
+                                    <mat-option *ngFor="let elect of electorlytlabseunits" [value]="elect.longname">
+                                        {{elect.longname}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+    <button mat-button (click)="saveUser(PreferenceInfo)">
+        <mat-icon aria-label="Finished=">done</mat-icon>
+        Done
+    </button>
+</form>
