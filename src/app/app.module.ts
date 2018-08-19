@@ -1,7 +1,7 @@
 import 'hammerjs';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,7 +31,7 @@ import { ErrorService } from './share/debug/error.service';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
     ReactiveFormsModule,
     NgbModule.forRoot(),
     BrowserModule,

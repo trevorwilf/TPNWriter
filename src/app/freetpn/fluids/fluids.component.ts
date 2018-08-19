@@ -1,18 +1,17 @@
+
+import {debounceTime,  catchError, tap, map } from 'rxjs/operators';
 import { Component, OnInit, ElementRef, Output } from '@angular/core';
 import { NgSwitch } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem } from 'primeng/primeng';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject ,  Subscription ,  of } from 'rxjs';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-import { of } from 'rxjs/observable/of';
-import { catchError, tap, map } from 'rxjs/operators';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
+
+
+
+
+
 
 import { ErrorService } from '../../share/debug/error.service';
 
@@ -109,7 +108,7 @@ export class FluidsinfoComponent implements OnInit {
     this.reqfield = {};
 
     // changes due to external forms
-    this.formData.CurrentUserPrefInfo.debounceTime(500).subscribe(data => {
+    this.formData.CurrentUserPrefInfo.pipe(debounceTime(500)).subscribe(data => {
       this.userPrefs = data;
       if (data) {
          // this changes the units of measure for the page
@@ -195,7 +194,7 @@ export class FluidsinfoComponent implements OnInit {
 
     // Dynamic internal changes
 
-    this.FluidsInfo.valueChanges.debounceTime(200).subscribe(data => {
+    this.FluidsInfo.valueChanges.pipe(debounceTime(200)).subscribe(data => {
       this.updateFluidsInfo(data);
       if (this.PatientInfo && this.TodaysInfo) {
         if (this.PatientInfo.birthDate && this.TodaysInfo.bodyweight) {
@@ -215,8 +214,8 @@ export class FluidsinfoComponent implements OnInit {
     catchError(this._err.handleError)
     );
 
-    this.FluidsInfo.controls['fluidVolume'].valueChanges
-      .debounceTime(500)
+    this.FluidsInfo.controls['fluidVolume'].valueChanges.pipe(
+      debounceTime(500))
       .subscribe(data => {
         if (!this.FluidsInfo.controls['fluidVolume'].pristine) {
           this.getfluidperhour(data, 24);
@@ -226,8 +225,8 @@ export class FluidsinfoComponent implements OnInit {
       );
 
       this.FluidsInfo.controls['required']
-      .valueChanges
-      .debounceTime(200)
+      .valueChanges.pipe(
+      debounceTime(200))
       .subscribe(data => {
         this.FluidsInfo.controls['required'].patchValue(this.FluidsInfo.valid);
       },

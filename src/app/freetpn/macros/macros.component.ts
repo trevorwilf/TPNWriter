@@ -1,18 +1,17 @@
+
+import {debounceTime,  catchError, tap, map } from 'rxjs/operators';
 import { Component, OnInit, ElementRef, Output } from '@angular/core';
 import { NgSwitch } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem } from 'primeng/primeng';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject ,  Subscription ,  of } from 'rxjs';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-import { of } from 'rxjs/observable/of';
-import { catchError, tap, map } from 'rxjs/operators';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
+
+
+
+
+
 
 import { ErrorService } from '../../share/debug/error.service';
 
@@ -114,7 +113,7 @@ export class MacrosinfoComponent implements OnInit {
     });
 
     // changes due to external forms
-    this.formData.CurrentUserPrefInfo.debounceTime(500).subscribe(data => {
+    this.formData.CurrentUserPrefInfo.pipe(debounceTime(500)).subscribe(data => {
       this.userPrefs = data;
       if (data) {
           for (const element in data) {
@@ -193,7 +192,7 @@ export class MacrosinfoComponent implements OnInit {
 
 
     // Dynamic internal changes
-    this.MacrosInfo.valueChanges.debounceTime(50).subscribe(data => {
+    this.MacrosInfo.valueChanges.pipe(debounceTime(50)).subscribe(data => {
       this.updateMacrosInfo(data);
 
       if (this.MacrosInfo.valid !== this.MacrosInfo.controls['required'].value) {
@@ -204,8 +203,8 @@ export class MacrosinfoComponent implements OnInit {
     );
 
     // flips GIR and Dextrose Calc
-    this.MacrosInfo.controls['useGIR'].valueChanges
-     .debounceTime(200)
+    this.MacrosInfo.controls['useGIR'].valueChanges.pipe(
+     debounceTime(200))
      .subscribe(data => {
         if (this.MacrosInfo.controls['useGIR'].value === 'GIR') {
           if (this.FluidsInfo &&
@@ -238,8 +237,8 @@ export class MacrosinfoComponent implements OnInit {
      catchError(this._err.handleError)
      );
 
-     this.MacrosInfo.controls['GIR'].valueChanges
-     .debounceTime(200)
+     this.MacrosInfo.controls['GIR'].valueChanges.pipe(
+     debounceTime(200))
      .subscribe(data => {
           if (this.FluidsInfo &&
               !this.MacrosInfo.controls['GIR'].pristine &&
@@ -258,8 +257,8 @@ export class MacrosinfoComponent implements OnInit {
      catchError(this._err.handleError)
      );
 
-     this.MacrosInfo.controls['dextrose'].valueChanges
-     .debounceTime(200)
+     this.MacrosInfo.controls['dextrose'].valueChanges.pipe(
+     debounceTime(200))
      .subscribe(data => {
           if (this.FluidsInfo &&
               !this.MacrosInfo.controls['dextrose'].pristine &&
@@ -280,8 +279,8 @@ export class MacrosinfoComponent implements OnInit {
      );
 
      this.MacrosInfo.controls['required']
-      .valueChanges
-      .debounceTime(200)
+      .valueChanges.pipe(
+      debounceTime(200))
       .subscribe(data => {
         this.MacrosInfo.controls['required'].patchValue(this.MacrosInfo.valid);
      },

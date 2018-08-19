@@ -1,18 +1,17 @@
+
+import {debounceTime,  catchError, tap, map } from 'rxjs/operators';
 import { Component, OnInit, ElementRef, Output } from '@angular/core';
 import { NgSwitch } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem } from 'primeng/primeng';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject ,  Subscription ,  of } from 'rxjs';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-import { of } from 'rxjs/observable/of';
-import { catchError, tap, map } from 'rxjs/operators';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
+
+
+
+
+
 
 import { ErrorService } from '../../share/debug/error.service';
 
@@ -123,7 +122,7 @@ export class PatientinfoComponent implements OnInit {
     });
 
     // changes due to external forms
-    this.formData.CurrentUserPrefInfo.debounceTime(500).subscribe(data => {
+    this.formData.CurrentUserPrefInfo.pipe(debounceTime(500)).subscribe(data => {
       this.userPrefs = data;
       if (data) {
           for (let element in data) {
@@ -173,8 +172,8 @@ export class PatientinfoComponent implements OnInit {
     );
 
     // dynamic updates
-    this.PatientInfo.valueChanges
-      .debounceTime(50)
+    this.PatientInfo.valueChanges.pipe(
+      debounceTime(50))
       .subscribe(data => {
           this.updatePatientInfo(data);
 
@@ -188,8 +187,8 @@ export class PatientinfoComponent implements OnInit {
 
 
     this.PatientInfo.controls['birthDate']
-      .valueChanges
-      .debounceTime(50)
+      .valueChanges.pipe(
+      debounceTime(50))
       .subscribe(data => {
           this.PatientInfo.controls['daysofLife'].patchValue(patientdemographicscalc.ageindays(data));
           this.PatientInfo.controls['weeksofLife'].patchValue(patientdemographicscalc.ageinweeks(data));
@@ -200,8 +199,8 @@ export class PatientinfoComponent implements OnInit {
       );
 
     this.PatientInfo.controls['birthTime']
-      .valueChanges
-      .debounceTime(50)
+      .valueChanges.pipe(
+      debounceTime(50))
       .subscribe(data => {
 
           this.mergeBirthTimeDate(this.PatientInfo.get('birthDate').value, data);
@@ -210,8 +209,8 @@ export class PatientinfoComponent implements OnInit {
       );
 
       this.PatientInfo.controls['required']
-      .valueChanges
-      .debounceTime(200)
+      .valueChanges.pipe(
+      debounceTime(200))
       .subscribe(data => {
         this.PatientInfo.controls['required'].patchValue(this.PatientInfo.valid);
       },

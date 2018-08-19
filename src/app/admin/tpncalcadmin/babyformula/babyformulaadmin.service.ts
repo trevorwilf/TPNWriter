@@ -1,11 +1,13 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
 
 import { BabyFormula, BabyFormulatable } from '../../../share/DB_Values/babyformula';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/toArray';
+import { Observable } from 'rxjs';
+
 import * as _ from 'lodash';
 
 
@@ -30,16 +32,16 @@ export class BabyFormulaAdminService {
   getBabyFormulasList(query?) {
     // const babyformulasRef = afDb.list('/globalsettings/babyformula')
     // return this.babyformulasRef.valueChanges()
-    return this.babyformulasRef.snapshotChanges().map(arr => {
+    return this.babyformulasRef.snapshotChanges().pipe(map(arr => {
       return arr.map(snap => Object.assign(snap.payload.val(), { $key: snap.key }) );
-    });
+    }));
   }
 
 
   // Return a single observable item
   getBabyFormula(key: string): Observable<BabyFormula> {
     const babyformulaPath = `${this.basePath}/${key}`;
-    this.babyformula = this.db.object(babyformulaPath).valueChanges();
+    this.babyformula = this.db.object<BabyFormula>(babyformulaPath).valueChanges();
     return this.babyformula;
 
   }

@@ -1,11 +1,13 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
 
 import { Stressors, Stressorstable } from '../../../share/DB_Values/Stressor';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/toArray';
+import { Observable } from 'rxjs';
+
 import * as _ from 'lodash';
 
 
@@ -30,16 +32,16 @@ export class StressorsAdminService {
   getStressersList(query?) {
     // const stressersRef = afDb.list('/globalsettings/stresser')
     // return this.stressersRef.valueChanges()
-    return this.stressersRef.snapshotChanges().map(arr => {
+    return this.stressersRef.snapshotChanges().pipe(map(arr => {
       return arr.map(snap => Object.assign(snap.payload.val(), { $key: snap.key }) );
-    });
+    }));
   }
 
 
   // Return a single observable item
   getStresser(key: string): Observable<Stressors> {
     const stresserPath = `${this.basePath}/${key}`;
-    this.stresser = this.db.object(stresserPath).valueChanges();
+    this.stresser = this.db.object<Stressors>(stresserPath).valueChanges();
     return this.stresser;
 
   }

@@ -10,25 +10,24 @@ import {
 import * as firebase from 'firebase/app';
 
 import { LocalDataSource, ServerDataSource } from 'ng2-smart-table';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { Subscription ,  Observable } from 'rxjs';
 
 import { Stressors, Stressorstable } from '../../../share/DB_Values/Stressor';
 import { StressorsAdminService } from './stresseradmin.service';
-import 'rxjs/add/operator/toArray';
+
 // Observable class extensions
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/throw';
+
+
 
 // Observable operators
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/first';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/mergeMap';
+
+
+
+
+
+
+
+
 
 @Component({
   selector: 'app-stressortable',

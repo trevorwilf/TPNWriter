@@ -1,17 +1,14 @@
 import { Component, OnInit, ElementRef, Output } from '@angular/core';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject ,  Subscription ,  Observable ,  of } from 'rxjs';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-import { of } from 'rxjs/observable/of';
 import { catchError, tap, map } from 'rxjs/operators';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/toArray';
+
+
+
+
+
+
 
 import { ErrorService } from '../../share/debug/error.service';
 

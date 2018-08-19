@@ -1,13 +1,12 @@
+
+import {throwError as observableThrowError,  Observable ,  of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-
-import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-import { of } from 'rxjs/observable/of';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
+
+
+
+
 import { catchError, tap, map } from 'rxjs/operators';
 
 @Injectable()
@@ -30,7 +29,7 @@ export class ErrorService {
 
         // these get commented out in prod
         console.error(errorMessage);
-        return Observable.throw(errorMessage);
+        return observableThrowError(errorMessage);
         // this gets uncommented in prod
         // Observable.of(false);
     }
@@ -39,7 +38,7 @@ export class ErrorService {
       // in a real world app, we may send the server to some remote logging infrastructure
       // instead of just logging it to the console
       console.error(error);
-      return Observable.throw(error.json() || 'Server error');
+      return observableThrowError(error.json() || 'Server error');
   }
 
   // for writing values inside forms
