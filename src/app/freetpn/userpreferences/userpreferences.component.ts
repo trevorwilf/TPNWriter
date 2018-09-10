@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { AuthService } from '../../share/auth/auth.service';
-import { AngularFireObject, AngularFireDatabase } from 'angularfire2/database';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireObject, AngularFireDatabase } from '@angular/fire/database';
+import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 
 import { BehaviorSubject ,  Subscription ,  of } from 'rxjs';
@@ -118,7 +118,7 @@ export class UserPreferenceComponent implements OnInit {
       sodiumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
       potassiumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
       calciumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
-      phosphorusunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
+      phosphorusunit: [this.electorlyteunits.find(x => x.id === '2').longname, Validators.required],
       acetateunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
       magnesiumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
 

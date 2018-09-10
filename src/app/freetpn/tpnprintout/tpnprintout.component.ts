@@ -37,18 +37,18 @@ import { Unitstable } from '../../share/DB_Values/Units';
 import { IWriterPrefs } from '../../share/DB_Values/WriterPrefs';
 
 @Component({
-  selector: 'app-electrolyte',
-  templateUrl: './electrolytes.component.html',
-  styleUrls: ['./electrolytes.component.css']
+  selector: 'app-tpnprintout',
+  templateUrl: './tpnprintout.component.html',
+  styleUrls: ['./tpnprintout.component.css']
 })
 
-export class ElectrolyteinfoComponent implements OnInit {
+export class TPNPrintoutComponent implements OnInit {
 
   PatientInfo: IPatient;
   TodaysInfo: IPatientObservations;
   FluidsInfo: IFluids;
   userPrefs: IWriterPrefs;
-  // electrolyteInfo: IElectrolyte;
+  electrolyteInfo: IElectrolyte;
   additiveInfo: IAdditive;
   macroInfo: IMacros;
 
@@ -59,7 +59,7 @@ export class ElectrolyteinfoComponent implements OnInit {
   electorlytlabseunits: any;
   genderlist: any;
 
-  ElectrolyteInfo: FormGroup;
+  TPNPrintout: FormGroup;
 
   constructor(
     private formData: FreeTPNDataService,
@@ -79,7 +79,7 @@ export class ElectrolyteinfoComponent implements OnInit {
 
   ngOnInit() {
 
-    this.ElectrolyteInfo = this._formBuilder.group({
+    this.TPNPrintout = this._formBuilder.group({
       sodium: [],
       sodiumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
       potassium: [],
@@ -101,12 +101,12 @@ export class ElectrolyteinfoComponent implements OnInit {
       this.userPrefs = data;
       if (data) {
           for (let element in data) {
-            if (this.ElectrolyteInfo.controls[element]) {
-              if (this.ElectrolyteInfo.controls[element].pristine) {
+            if (this.TPNPrintout.controls[element]) {
+              if (this.TPNPrintout.controls[element].pristine) {
                 // console.log(element, this.userPrefs[element]);
                 if (this.userPrefs[element].length > 0) {
-                  this.ElectrolyteInfo.controls[element].patchValue(this.userPrefs[element]);
-                  this.ElectrolyteInfo.controls[element].markAsPristine();
+                  this.TPNPrintout.controls[element].patchValue(this.userPrefs[element]);
+                  this.TPNPrintout.controls[element].markAsPristine();
                 }
               }
             }
@@ -144,44 +144,50 @@ export class ElectrolyteinfoComponent implements OnInit {
     catchError(this._err.handleError)
     );
 
-    // Dynamic internal changes
-    this.ElectrolyteInfo.valueChanges.pipe(debounceTime(50)).subscribe(data => {
-      this.updateElectrolyteInfo(data);
+    this.formData.CurrentElectrolyteInfo.subscribe(data => {
+      this.electrolyteInfo = data;
+    },
+    catchError(this._err.handleError)
+    );
 
-      if (this.ElectrolyteInfo.valid !== this.ElectrolyteInfo.controls['required'].value) {
-        this.ElectrolyteInfo.controls['required'].patchValue(this.ElectrolyteInfo.valid);
+    // Dynamic internal changes
+    this.TPNPrintout.valueChanges.pipe(debounceTime(50)).subscribe(data => {
+      this.TPNPrintout(data);
+
+      if (this.TPNPrintout.valid !== this.TPNPrintout.controls['required'].value) {
+        this.TPNPrintout.controls['required'].patchValue(this.TPNPrintout.valid);
       }
     },
     catchError(this._err.handleError)
     );
 
-    this.ElectrolyteInfo.controls['required']
+    this.TPNPrintout.controls['required']
     .valueChanges.pipe(
     debounceTime(200))
     .subscribe(data => {
-      this.ElectrolyteInfo.controls['required'].patchValue(this.ElectrolyteInfo.valid);
+      this.TPNPrintout.controls['required'].patchValue(this.TPNPrintout.valid);
     },
     catchError(this._err.handleError)
     );
-    //   this.ElectrolyteInfo.controls['dripVolume'].valueChanges
+    //   this.TPNPrintout.controls['dripVolume'].valueChanges
     //     .debounceTime(200)
     //     .subscribe(data => {});
     //
   }
 
-  updateElectrolyteInfo(info: IElectrolyte): void {
-    // this.formData.changeElectrolyteInfoSource(info.getRawValue());
-    this.formData.changeElectrolyteInfoSource(info);
+  // TPNPrintout(info: IElectrolyte): void {
+    // this.formData.TPNPrintout(info.getRawValue());
+    // this.formData.changeTPNPrintoutSource(info);
     // console.log('## updateelectrolyte  ##');
     // console.log(info.getRawValue());
     // console.log(info);
     // console.log(this.formData.CurrentElectrolyteInfo);
     // this.formData.CurrentElectrolyteInfo.map(x => console.log(x));
-  }
+  // }
 
 
   hasFormErrors() {
-    return !this.ElectrolyteInfo.valid;
+    return !this.TPNPrintout.valid;
   }
 
   // writetoconsolepi(info) {

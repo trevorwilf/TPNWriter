@@ -6,7 +6,7 @@ import {
   AngularFireDatabase,
   AngularFireList,
   AngularFireObject
-} from 'angularfire2/database';
+} from '@angular/fire/database';
 import * as firebase from 'firebase/app';
 
 import { LocalDataSource, ServerDataSource } from 'ng2-smart-table';

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import * as firebase from 'firebase/app';
 
 import { BabyFormula, BabyFormulatable } from '../../share/DB_Values/babyformula';

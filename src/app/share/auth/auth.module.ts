@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { AuthService } from './auth.service';
-import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AuthGuard } from './auth.guard';
 
 @NgModule({
