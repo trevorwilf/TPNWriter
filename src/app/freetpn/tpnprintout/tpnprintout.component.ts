@@ -152,7 +152,7 @@ export class TPNPrintoutComponent implements OnInit {
 
     // Dynamic internal changes
     this.TPNPrintout.valueChanges.pipe(debounceTime(50)).subscribe(data => {
-      this.TPNPrintout(data);
+      this.updateTPNPrintout(data);
 
       if (this.TPNPrintout.valid !== this.TPNPrintout.controls['required'].value) {
         this.TPNPrintout.controls['required'].patchValue(this.TPNPrintout.valid);
@@ -175,15 +175,15 @@ export class TPNPrintoutComponent implements OnInit {
     //
   }
 
-  // TPNPrintout(info: IElectrolyte): void {
-    // this.formData.TPNPrintout(info.getRawValue());
-    // this.formData.changeTPNPrintoutSource(info);
-    // console.log('## updateelectrolyte  ##');
+  updateTPNPrintout(info: IAdditive): void {
+    // this.formData.changeAdditiveInfoSource(info.getRawValue());
+    this.formData.changeAdditiveInfoSource(info);
+    // console.log('## updateadditive  ##');
     // console.log(info.getRawValue());
     // console.log(info);
-    // console.log(this.formData.CurrentElectrolyteInfo);
-    // this.formData.CurrentElectrolyteInfo.map(x => console.log(x));
-  // }
+    // console.log(this.formData.CurrentAdditiveInfo);
+    // this.formData.CurrentAdditiveInfo.map(x => console.log(x));
+  }
 
 
   hasFormErrors() {
