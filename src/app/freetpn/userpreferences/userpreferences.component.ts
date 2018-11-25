@@ -118,7 +118,7 @@ export class UserPreferenceComponent implements OnInit {
       sodiumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
       potassiumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
       calciumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
-      phosphorusunit: [this.electorlyteunits.find(x => x.id === '2').longname, Validators.required],
+      phosphorusunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
       acetateunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
       magnesiumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
 

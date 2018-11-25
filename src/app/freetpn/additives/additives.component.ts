@@ -143,23 +143,26 @@ export class AdditiveinfoComponent implements OnInit {
     );
 
     // Dynamic internal changes
-    this.AdditiveInfo.valueChanges.pipe(debounceTime(200)).subscribe(data => {
-      this.updateAdditiveInfo(data);
-      if (this.AdditiveInfo.valid !== this.AdditiveInfo.controls['required'].value) {
-        this.AdditiveInfo.controls['required'].patchValue(this.AdditiveInfo.valid);
-      }
+    this.AdditiveInfo.valueChanges
+      .subscribe(data => {
+
+        if (this.AdditiveInfo.valid !== this.AdditiveInfo.controls['required'].value) {
+          this.AdditiveInfo.controls['required'].patchValue(this.AdditiveInfo.valid);
+          data.required = this.AdditiveInfo.valid.valueOf();
+        }
+        this.updateAdditiveInfo(data);
     },
     catchError(this._err.handleError)
     );
 
-    this.AdditiveInfo.controls['required']
-    .valueChanges.pipe(
-    debounceTime(200))
-    .subscribe(data => {
-      this.AdditiveInfo.controls['required'].patchValue(this.AdditiveInfo.valid);
-    },
-    catchError(this._err.handleError)
-    );
+    //this.AdditiveInfo.controls['required']
+    //.valueChanges.pipe(
+    //debounceTime(200))
+    //.subscribe(data => {
+    //  this.AdditiveInfo.controls['required'].patchValue(this.AdditiveInfo.valid);
+    //},
+    //catchError(this._err.handleError)
+   // );
 
     //   this.AdditiveInfo.controls['dripVolume'].valueChanges
     //     .debounceTime(200)

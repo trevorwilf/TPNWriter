@@ -96,7 +96,7 @@ export class patientdemographicscalc {
           switch (equation) {
               // option1: Harris-Benedict equation
               case 1:
-                  if (gender == 'male') {
+                  if (gender === 'male') {
                       //patient is male
                       var ree = 66.5 + (13.75 * weight) + (5.003 * cm) - (6.755 * ageinyears);
                   } else {
@@ -118,10 +118,10 @@ export class patientdemographicscalc {
               case 3:
                   if (gender == 'male') {
                       //patient is male
-                      var ree = (10 * weight) + (6.25 * cm) - (5 * ageinyears) + 5;
+                      let ree = (10 * weight) + (6.25 * cm) - (5 * ageinyears) + 5;
                   } else {
                       //patient is female
-                      var ree = (10 * weight) + (6.25 * cm) - (5 * ageinyears) - 161;
+                      let ree = (10 * weight) + (6.25 * cm) - (5 * ageinyears) - 161;
                   }
                   break;
                 }

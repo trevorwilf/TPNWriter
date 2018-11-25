@@ -68,31 +68,37 @@ export class FreeTPNDataService {
 
   changeTodaysInfoSource(update: IPatientObservations) {
     this.TodaysInfoSource.next(update);
+    this._err.writetoconsole(this.CurrentTodaysInfo);
     // console.log(this.TodaysInfoSource);
   }
 
   changeFluidsInfoSource(update: IFluids) {
     this.FluidsInfoSource.next(update);
+    this._err.writetoconsole(this.CurrentFluidsInfo);
     // console.log(this.FluidsInfoSource);
   }
 
   changeMacrosInfoSource(update: IMacros) {
     this.MacrosInfoSource.next(update);
+    this._err.writetoconsole(this.CurrentMacrosInfo);
     // console.log(this.MacrosInfoSource);
   }
 
   changeElectrolyteInfoSource(update: IElectrolyte) {
     this.ElectrolyteInfoSource.next(update);
+    this._err.writetoconsole(this.CurrentElectrolyteInfo);
     // console.log(this.ElectrolyteInfoSource);
   }
 
   changeAdditiveInfoSource(update: IAdditive) {
     this.AdditiveInfoSource.next(update);
+    this._err.writetoconsole(this.CurrentAdditiveInfo);
     // console.log(this.AdditiveInfoSource);
   }
 
   changeCurrentUserPrefInfo(update: IWriterPrefs) {
     this.UserPrefInfoSource.next(update);
+    // this._err.writetoconsole(this.CurrentUserPrefInfo);
     // console.log(this.UserPrefInfoSource);
   }
 }

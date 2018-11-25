@@ -46,6 +46,13 @@
         {'id': 5, 'unit': 'mgL', 'longname': 'mg/L', 'conversion': '0.001', 'default': '0'},
       ];
 
+      // calories
+      static MacroCals: Array<any> = [
+        {'id': 0, 'shortname': 'C', 'longname': 'carb', 'default' : '1', 'value' : '3.4'},
+        {'id': 1, 'shortname': 'F', 'longname': 'lipid', 'default' : '1', 'value' : '9'},
+        {'id': 2, 'shortname': 'P', 'longname': 'protein', 'default' : '0', 'value' : '4'}
+      ];
+
       static valencetable: Array<any> = [
         {
             'symbol': 'na',

@@ -80,45 +80,46 @@ export class TPNPrintoutComponent implements OnInit {
   ngOnInit() {
 
     this.TPNPrintout = this._formBuilder.group({
-      sodium: [],
-      sodiumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
-      potassium: [],
-      potassiumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
-      calcium: [],
-      calciumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
-      phosphorus: [],
-      phosphorusunit: [this.electorlyteunits.find(x => x.id === 2).longname, Validators.required],
-      acetate: [],
-      acetateunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
-      magnesium: [],
-      magnesiumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
+      given: [''],
+      family: [''],
+      MRN: [''],
+      CSN: [''],
+      roomnumber: [''],
+      birthDate: [''],
+
+
+
 
       required: [false]
     });
 
     // changes due to external forms
-    this.formData.CurrentUserPrefInfo.pipe(debounceTime(200)).subscribe(data => {
-      this.userPrefs = data;
+    this.formData.CurrentPatientInfo.subscribe(data => {
+      this.PatientInfo = data;
       if (data) {
-          for (let element in data) {
-            if (this.TPNPrintout.controls[element]) {
-              if (this.TPNPrintout.controls[element].pristine) {
-                // console.log(element, this.userPrefs[element]);
-                if (this.userPrefs[element].length > 0) {
-                  this.TPNPrintout.controls[element].patchValue(this.userPrefs[element]);
-                  this.TPNPrintout.controls[element].markAsPristine();
-                }
-              }
-            }
-          }
+        // Add Data
+        if (data.given) {
+          this.TPNPrintout.controls['given'].patchValue(data.given);
+        }
+        if (data.family) {
+          this.TPNPrintout.controls['family'].patchValue(data.family);
+        }
+        if (data.MRN) {
+          this.TPNPrintout.controls['MRN'].patchValue(data.MRN);
+        }
+        if (data.CSN) {
+          this.TPNPrintout.controls['CSN'].patchValue(data.CSN);
+        }
+        if (data.roomnumber) {
+          this.TPNPrintout.controls['roomnumber'].patchValue(data.roomnumber);
+        }
+        if (data.birthDate) {
+          this.TPNPrintout.controls['birthDate'].patchValue(data.birthDate);
+        }
       }
     },
     catchError(this._err.handleError)
     );
-
-    this.formData.CurrentPatientInfo.subscribe(data => {
-      this.PatientInfo = data;
-    });
 
     this.formData.CurrentTodaysInfo.subscribe(data => {
       this.TodaysInfo = data;
@@ -177,7 +178,7 @@ export class TPNPrintoutComponent implements OnInit {
 
   updateTPNPrintout(info: IAdditive): void {
     // this.formData.changeAdditiveInfoSource(info.getRawValue());
-    this.formData.changeAdditiveInfoSource(info);
+    // this.formData.changeAdditiveInfoSource(info);
     // console.log('## updateadditive  ##');
     // console.log(info.getRawValue());
     // console.log(info);

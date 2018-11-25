@@ -5,7 +5,7 @@ import { NgSwitch } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem } from 'primeng/primeng';
 
-import { BehaviorSubject ,  Subscription ,  of } from 'rxjs';
+import { BehaviorSubject ,  Subscription ,  of, timer } from 'rxjs';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 
@@ -192,27 +192,24 @@ export class TodaysobservationsComponent implements OnInit {
     this.TodaysInfo.controls['todaydate'].markAsDirty();
     this.TodaysInfo.controls['todaydate'].markAsTouched();
 
+    //////////////////////////////////////////////
     // Dynamic internal changes
-    this.TodaysInfo.valueChanges.pipe(
-      debounceTime(200))
+
+    this.TodaysInfo.valueChanges
       .subscribe(data => {
-        this.updateTodaysInfo(data);
 
         if (this.TodaysInfo.valid !== this.TodaysInfo.controls['required'].value) {
-          this.TodaysInfo.controls['required'].patchValue(this.TodaysInfo.valid);
+          this.TodaysInfo.controls['required'].patchValue(this.TodaysInfo.valid.valueOf());
+          data.required = this.TodaysInfo.valid.valueOf();
         }
+
+        this.updateTodaysInfo(data);
+
       },
       catchError(this._err.handleError)
       );
 
-      this.TodaysInfo.controls['required']
-      .valueChanges.pipe(
-      debounceTime(200))
-      .subscribe(data => {
-        this.TodaysInfo.controls['required'].patchValue(this.TodaysInfo.valid);
-      },
-      catchError(this._err.handleError)
-      );
+
   }
 
   updateTodaysInfo(info: IPatientObservations): void {

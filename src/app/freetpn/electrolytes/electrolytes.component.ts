@@ -97,7 +97,7 @@ export class ElectrolyteinfoComponent implements OnInit {
     });
 
     // changes due to external forms
-    this.formData.CurrentUserPrefInfo.pipe(debounceTime(200)).subscribe(data => {
+    this.formData.CurrentUserPrefInfo.pipe(debounceTime(100)).subscribe(data => {
       this.userPrefs = data;
       if (data) {
           for (let element in data) {
@@ -118,7 +118,9 @@ export class ElectrolyteinfoComponent implements OnInit {
 
     this.formData.CurrentPatientInfo.subscribe(data => {
       this.PatientInfo = data;
-    });
+    },
+    catchError(this._err.handleError)
+    );
 
     this.formData.CurrentTodaysInfo.subscribe(data => {
       this.TodaysInfo = data;
@@ -145,12 +147,14 @@ export class ElectrolyteinfoComponent implements OnInit {
     );
 
     // Dynamic internal changes
-    this.ElectrolyteInfo.valueChanges.pipe(debounceTime(50)).subscribe(data => {
-      this.updateElectrolyteInfo(data);
+    this.ElectrolyteInfo.valueChanges
+      .subscribe(data => {
 
-      if (this.ElectrolyteInfo.valid !== this.ElectrolyteInfo.controls['required'].value) {
-        this.ElectrolyteInfo.controls['required'].patchValue(this.ElectrolyteInfo.valid);
-      }
+        if (this.ElectrolyteInfo.valid !== this.ElectrolyteInfo.controls['required'].value) {
+          this.ElectrolyteInfo.controls['required'].patchValue(this.ElectrolyteInfo.valid);
+          data.required = this.ElectrolyteInfo.valid.valueOf();
+        }
+        this.updateElectrolyteInfo(data);
     },
     catchError(this._err.handleError)
     );

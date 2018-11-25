@@ -2,19 +2,30 @@
 
 export interface IMacros {
   calEquation: string;
-  energyrequirementMin: number;
-  energyrequirementMax: number;
+  energyrequirement?: number;
+  energyrequirementgoal?: number;
+  energyrequirementperkg?: number;
+  energyrequirementMin?: number;
+  energyrequirementMax?: number;
   useGIR: boolean;
-  GIR: number;
-  dextrose: number;
-  proteingoalMin: number;
-  proteingoalMax: number;
-  protein: number;
-  cystein: number;
-  lipids: number;
+  GIR?: number;
+  dextrose?: number;
+
+  proteingoalMin?: number;
+  proteingoalMax?: number;
+  proteingoal?: number;
+  protein?: number;
+  proteinperkg?: number;
+  cystein?: number;
+
+  lipidsgoalMin?: number;
+  lipidsgoalMax?: number;
+  lipidsgoal?: number;
+  lipids?: number;
+  lipidsperkg?: number;
   lipidSource: string;
   lipidPercent: number;
-  carbs: number;
+  carbs?: number;
   notes: string;
 
   required: boolean;
@@ -40,7 +51,9 @@ export class Macrotable {
 
   static lipidPercent: Array<any> = [
     {'id': 0, 'percent': '10', 'longname': '10', 'default' : '1'},
-    {'id': 1, 'percent': '20', 'longname': '20', 'default' : '0'}
+    {'id': 1, 'percent': '20', 'longname': '20', 'default' : '0'},
+    {'id': 2, 'percent': '30', 'longname': '30', 'default' : '0'},
+    {'id': 3, 'percent': '40', 'longname': '40', 'default' : '0'}
   ];
 
   constructor () {}

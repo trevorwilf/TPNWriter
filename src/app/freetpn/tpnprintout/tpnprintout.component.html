@@ -4,8 +4,8 @@
 <form [formGroup]="TPNPrintout">
     <div class="d-flex flex-row justify-content-between">
         <div style="width: 100mm" class="d-flex p-5 flex-column border">
-          Patient ID <br>
-          Patient Name<br>
+          Patient ID<br>
+          Patient Name {{ TPNPrintout.given }} {{ TPNPrintout.family }}<br>
           DOB:<br>
           CSN NO.<br>
           MR NO:<br>

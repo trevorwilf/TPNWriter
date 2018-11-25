@@ -5,7 +5,7 @@ import { NgSwitch } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem } from 'primeng/primeng';
 
-import { BehaviorSubject ,  Subscription ,  of } from 'rxjs';
+import { BehaviorSubject ,  Subscription ,  of, interval } from 'rxjs';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 
@@ -171,15 +171,19 @@ export class PatientinfoComponent implements OnInit {
     catchError(this._err.handleError)
     );
 
+    ///////////////////////////////////////
     // dynamic updates
+
     this.PatientInfo.valueChanges.pipe(
-      debounceTime(50))
+      debounceTime(1))
       .subscribe(data => {
-          this.updatePatientInfo(data);
 
           if (this.PatientInfo.valid !== this.PatientInfo.controls['required'].value) {
-            this.PatientInfo.controls['required'].patchValue(this.PatientInfo.valid);
+            this.PatientInfo.controls['required'].patchValue(this.PatientInfo.valid.valueOf());
+            data.required = this.PatientInfo.valid.valueOf();
           }
+
+          this.updatePatientInfo(data);
 
         },
         catchError(this._err.handleError)
@@ -188,7 +192,7 @@ export class PatientinfoComponent implements OnInit {
 
     this.PatientInfo.controls['birthDate']
       .valueChanges.pipe(
-      debounceTime(50))
+      debounceTime(100))
       .subscribe(data => {
           this.PatientInfo.controls['daysofLife'].patchValue(patientdemographicscalc.ageindays(data));
           this.PatientInfo.controls['weeksofLife'].patchValue(patientdemographicscalc.ageinweeks(data));
@@ -200,7 +204,7 @@ export class PatientinfoComponent implements OnInit {
 
     this.PatientInfo.controls['birthTime']
       .valueChanges.pipe(
-      debounceTime(50))
+      debounceTime(100))
       .subscribe(data => {
 
           this.mergeBirthTimeDate(this.PatientInfo.get('birthDate').value, data);
@@ -208,14 +212,23 @@ export class PatientinfoComponent implements OnInit {
       catchError(this._err.handleError)
       );
 
-      this.PatientInfo.controls['required']
-      .valueChanges.pipe(
-      debounceTime(200))
-      .subscribe(data => {
-        this.PatientInfo.controls['required'].patchValue(this.PatientInfo.valid);
-      },
-      catchError(this._err.handleError)
-      );
+      //this.PatientInfo.get('stressers')
+      //.valueChanges.pipe(debounceTime(100))
+      //.subscribe(data => {
+      //    console.log(data);
+      //    // this.PatientInfo.controls['stressers'].patchValue(data);
+      //},
+      //catchError(this._err.handleError)
+      //);
+
+      //this.PatientInfo.controls['required']
+      //.valueChanges.pipe(
+      //debounceTime(150))
+      //.subscribe(data => {
+      //  this.PatientInfo.controls['required'].patchValue(this.PatientInfo.valid.valueOf());
+      //},
+      //catchError(this._err.handleError)
+      //);
 
    }
 

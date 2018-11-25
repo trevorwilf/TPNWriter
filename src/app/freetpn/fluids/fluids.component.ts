@@ -1,6 +1,6 @@
 
 import {debounceTime,  catchError, tap, map } from 'rxjs/operators';
-import { Component, OnInit, ElementRef, Output } from '@angular/core';
+import { Component, OnInit, ElementRef, Output, ChangeDetectionStrategy } from '@angular/core';
 import { NgSwitch } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem } from 'primeng/primeng';
@@ -148,22 +148,25 @@ export class FluidsinfoComponent implements OnInit {
 
     this.formData.CurrentTodaysInfo.subscribe(data => {
       this.TodaysInfo = data;
+      // console.log('ct trigger');
       if (data) {
         if (data.useEnteral) {
           this.FluidsInfo.controls['useEnteral'].patchValue(data.useEnteral);
         }
 
         if (data.bodyweight) {
+          // console.log('data.bodyweight');
           // update dosing weight to be current weight unless adjusted
           if (this.FluidsInfo.controls['dosingWeight'].pristine) {
-            this.FluidsInfo.controls['dosingWeight'].patchValue(this.TodaysInfo.bodyweight);
-            this.FluidsInfo.controls['bodyweightunits'].patchValue(this.TodaysInfo.bodyweightunits);
+            this.FluidsInfo.controls['dosingWeight'].patchValue(this.TodaysInfo.bodyweight.valueOf());
+            this.FluidsInfo.controls['bodyweightunits'].patchValue(this.TodaysInfo.bodyweightunits.valueOf());
+            this.FluidsInfo.controls['dosingWeight'].markAsPristine();
           }
 
           if (this.PatientInfo) {
             if (this.PatientInfo.birthDate) {
               this.reqfield.DOB = true;
-              this.getinitialfluidVolume(data, this.PatientInfo, this.TodaysInfo);
+              // this.getinitialfluidVolume(data, this.PatientInfo, this.TodaysInfo);
             } else {
               this.reqfield.DOB = false;
             }
@@ -192,30 +195,42 @@ export class FluidsinfoComponent implements OnInit {
     catchError(this._err.handleError)
     );
 
+    /////////////////////////////////////////
     // Dynamic internal changes
+    this.FluidsInfo.valueChanges
+      .subscribe(data => {
 
-    this.FluidsInfo.valueChanges.pipe(debounceTime(200)).subscribe(data => {
-      this.updateFluidsInfo(data);
-      if (this.PatientInfo && this.TodaysInfo) {
-        if (this.PatientInfo.birthDate && this.TodaysInfo.bodyweight) {
-          this.getinitialfluidVolume(
-            data,
-            this.PatientInfo,
-            this.TodaysInfo
-          );
+        if (this.FluidsInfo.valid !== this.FluidsInfo.controls['required'].value) {
+          this.FluidsInfo.controls['required'].patchValue(this.FluidsInfo.valid.valueOf());
+          data.required = this.FluidsInfo.valid.valueOf();
         }
-      }
 
-      if (this.FluidsInfo.valid !== this.FluidsInfo.controls['required'].value) {
-        this.FluidsInfo.controls['required'].patchValue(this.FluidsInfo.valid);
-      }
+        this.updateFluidsInfo(data);
+    },
+    catchError(this._err.handleError)
+    );
+
+    this.FluidsInfo.valueChanges.pipe(
+      debounceTime(10))
+      .subscribe(data => {
+
+        if (this.PatientInfo && this.TodaysInfo) {
+          if (this.PatientInfo.birthDate && this.TodaysInfo.bodyweight) {
+            this.getinitialfluidVolume(
+              data,
+              this.PatientInfo,
+              this.TodaysInfo
+            );
+          }
+        }
 
     },
     catchError(this._err.handleError)
     );
 
+
     this.FluidsInfo.controls['fluidVolume'].valueChanges.pipe(
-      debounceTime(500))
+      debounceTime(0))
       .subscribe(data => {
         if (!this.FluidsInfo.controls['fluidVolume'].pristine) {
           this.getfluidperhour(data, 24);
@@ -224,14 +239,14 @@ export class FluidsinfoComponent implements OnInit {
       catchError(this._err.handleError)
       );
 
-      this.FluidsInfo.controls['required']
-      .valueChanges.pipe(
-      debounceTime(200))
-      .subscribe(data => {
-        this.FluidsInfo.controls['required'].patchValue(this.FluidsInfo.valid);
-      },
-      catchError(this._err.handleError)
-      );
+      //this.FluidsInfo.controls['required']
+      //.valueChanges.pipe(
+      //debounceTime(200))
+      //.subscribe(data => {
+      //  this.FluidsInfo.controls['required'].patchValue(this.FluidsInfo.valid);
+      //},
+      //catchError(this._err.handleError)
+      //);
   }
 
   updateFluidsInfo(info: IFluids): void {
@@ -245,13 +260,15 @@ export class FluidsinfoComponent implements OnInit {
   }
 
   getinitialfluidVolume(finfo, pinfo, tinfo): void {
-    // console.log(tinfo.bodyweight);
-    // console.log(pinfo.daysofLife);
-    // console.log(tinfo);
+     // console.log(tinfo.bodyweight);
+     // console.log(pinfo.daysofLife);
+     // console.log(tinfo);
 
     if (finfo.dosingWeight) {
-      const kgweight = MathConversions.converttokgs(finfo.dosingWeight, this.weightunits.find(x => x.longname === finfo.bodyweightunits).tokg);
+
       if (pinfo.daysofLife) {
+        const kgweight = MathConversions
+                          .converttokgs(finfo.dosingWeight, this.weightunits.find(x => x.longname === finfo.bodyweightunits).tokg);
         if (finfo.use5Dayprotocol === true) {
           const volperkg = this.firstweekprotocol.find(
             x => x.id === pinfo.daysofLife
@@ -261,9 +278,16 @@ export class FluidsinfoComponent implements OnInit {
           const dailyvol = volperkg.ml * kgweight;
           this.FluidsInfo.controls['initialVolume'].patchValue(dailyvol);
           this.getfinalfluidVolume(dailyvol, finfo, tinfo);
+          // console.log(dailyvol);
 
         } else {
-            this.FluidsInfo.controls['initialVolume'].patchValue(FluidCalc.initialfluidVol(kgweight));
+            /////////
+            let y = FluidCalc.initialfluidVol(kgweight);
+            y = MathConversions.roundtoaccuracy(y);
+            if (y !== this.FluidsInfo.controls['initialVolume'].value) {
+              this.FluidsInfo.controls['initialVolume'].patchValue(y);
+            }
+
             this.getfinalfluidVolume(FluidCalc.initialfluidVol(kgweight), finfo, tinfo);
         }
 
@@ -283,14 +307,22 @@ export class FluidsinfoComponent implements OnInit {
         if (tinfo.useEnteral === true) {
           fvol = fvol - tinfo.enteralVolume;
         }
-        this.FluidsInfo.controls['fluidVolume'].patchValue(fvol);
-        this.FluidsInfo.controls['fluidRate'].patchValue(fvol / 24);
+
+        //
+        fvol = MathConversions.roundtoaccuracy(fvol);
+        if (fvol !== this.FluidsInfo.controls['fluidVolume'].value) {
+          // console.log(fvol);
+          // console.log(this.FluidsInfo.controls['fluidVolume'].value);
+
+          this.FluidsInfo.controls['fluidVolume'].patchValue(fvol);
+          this.getfluidperhour(fvol, 24);
+        }
       }
     }
   }
 
   getfluidperhour(fvol: number, hours: number = 24) {
-    this.FluidsInfo.controls['fluidRate'].patchValue(fvol / hours);
+    this.FluidsInfo.controls['fluidRate'].patchValue(MathConversions.roundtoaccuracy(fvol / hours));
   }
 
   hasFormErrors() {
