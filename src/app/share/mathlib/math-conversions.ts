@@ -19,7 +19,7 @@ export class MathConversions {
         return mm;
     }
 
-    // weights - we convert everything to grams for
+    // weights - we convert everything to kilograms for
     // internal calc.
     static converttokgs(weight: number, fact: number) {
       return weight * fact;

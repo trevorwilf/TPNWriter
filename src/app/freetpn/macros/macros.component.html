@@ -14,10 +14,10 @@
   <div class="d-flex flex-row flex-wrap">
     <div class="pr-1">
         <br>Total KCal Goal: {{MacrosInfo.get('energyrequirementgoal').value}} - Actual: {{MacrosInfo.get('energyrequirement').value}}
-        <br>kCal/kg/day: {{this.MacrosInfo.controls['energyrequirementperkg'].value}} - Actual:
+        <br>kCal/kg/day: {{MacrosInfo.get('energyrequirementperkggoal').value}} - Actual: {{MacrosInfo.get('energyrequirementperkg').value}}
         <br>Protein Goal: {{MacrosInfo.get('proteingoal').value}} - Actual: {{MacrosInfo.get('protein').value}}
         <br>Lipid Goal: {{MacrosInfo.get('lipidsgoal').value}} - Actual: {{MacrosInfo.get('lipids').value}}
-        <br>Carb Goal: {{MacrosInfo.get('carbs').value}} - Actual:
+        <br>Carb Goal: {{MacrosInfo.get('carbsgoal').value}} - Actual: {{MacrosInfo.get('carbs').value}}
     </div>
 </div>
 

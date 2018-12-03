@@ -13,9 +13,18 @@ export class MacroNutrient {
         // returns the calories of the macro
         // x = amount of macro (protein, carb, lipid)
         // y = cal per macro
-        var macrocal = macro * macrocalpergram;
+        const macrocal = macro * macrocalpergram;
         return macrocal;
     }
+
+    static getree(
+      macro1: number, macro1cal: number,
+      macro2: number, macro2cal: number,
+      macro3: number, macro3cal: number) {
+
+        const ree = ((macro1 * macro1cal) + (macro2 * macro2cal) + (macro3 * macro3cal));
+        return ree;
+      }
 
     static getxgms(calgoal: number,
                     macro1: number, macro1cal: number,
@@ -34,7 +43,7 @@ export class MacroNutrient {
 
     ///////////////
     // protein section
-    static getproteingoal(weight:number, daysofLife:number, ageinyears: number) {
+    static getproteingoal(weight: number, daysofLife: number, ageinyears: number) {
       // https://www.uptodate.com/contents/parenteral-nutrition-in-infants-and-children
       // Preterm neonate – 3 to 4 g/kg/day
       // Infants (1 to 12 months) – 2 to 3 g/kg/day
@@ -66,7 +75,7 @@ export class MacroNutrient {
         //  Goal for this (5 kg at birth) infant is 2 g/kg = 10 g; 10g/500 cc = 2 %. 10 grams x 4 kcal/g = 40 kcal. http://www.nutritioncare.org/NBPNS/Curriculum_Guide_for_Physician_Nutrition_Specialists/Curriculum_Guide_Table_of_Contents/Nutrition_Support/Pediatric/QUICK_REFERENCE_GUIDE_TO_WRITING_PEDIATRIC_TPN/
         //  Goal for this premature infant (1.5) is 3.5 g/kg = 5.25 g; 10g/500 cc = 1.05 %. 5.25 grams x 4 kcal/g = 21 kcal. https://www.uptodate.com/contents/parenteral-nutrition-in-premature-infants#H5
         //
-        var proteingms = weight * stresser;
+        const proteingms = weight * stresser;
         return proteingms;
     }
 
@@ -153,4 +162,19 @@ export class MacroNutrient {
       return MathConversions.roundtoaccuracy(x);
       }
 
+
+    static dextrosegmtoGIR(dextrosegm: number, dosingWeight: number, minutes: number = 1440) {
+      const x = ((dextrosegm / dosingWeight ) * 1000) / minutes;
+      return MathConversions.roundtoaccuracy(x);
+      }
+
+    static GIRtodextrosegm(gir: number, dosingWeight: number, minutes: number = 1440) {
+      const x = dosingWeight * ((gir * minutes ) / 1000);
+      return MathConversions.roundtoaccuracy(x);
+      }
+
+    static dextrosetodextrosegm(dextrose: number, dosingWeight: number, minutes: number = 1440) {
+      const x = ((dextrose * minutes ) / 1000) / dosingWeight;
+      return MathConversions.roundtoaccuracy(x);
+      }
 }

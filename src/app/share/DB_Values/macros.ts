@@ -3,8 +3,9 @@
 export interface IMacros {
   calEquation: string;
   energyrequirement?: number;
-  energyrequirementgoal?: number;
   energyrequirementperkg?: number;
+  energyrequirementgoal?: number;
+  energyrequirementperkggoal?: number;
   energyrequirementMin?: number;
   energyrequirementMax?: number;
   useGIR: boolean;
@@ -25,7 +26,9 @@ export interface IMacros {
   lipidsperkg?: number;
   lipidSource: string;
   lipidPercent: number;
+
   carbs?: number;
+  carbsgoal?: number;
   notes: string;
 
   required: boolean;

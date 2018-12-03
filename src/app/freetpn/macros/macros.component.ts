@@ -94,10 +94,11 @@ export class MacrosinfoComponent implements OnInit {
     this.MacrosInfo = this._formBuilder.group({
 
       energyrequirement: [''],
+      energyrequirementperkg: [''],
       energyrequirementgoal: [''],
+      energyrequirementperkggoal: [''],
       energyrequirementMin: [''],
       energyrequirementMax: [''],
-      energyrequirementperkg: [],
       GIR: ['', Validators.required],
       dextrose: ['', Validators.required],
 
@@ -115,6 +116,7 @@ export class MacrosinfoComponent implements OnInit {
       lipidsperkg: ['', Validators.required],
 
       carbs: ['', Validators.required],
+      carbsgoal: ['', Validators.required],
 
       // user prefs
       calEquation: [this.energyequationlist.find(x => x.default === '1').longname, Validators.required],
@@ -151,7 +153,7 @@ export class MacrosinfoComponent implements OnInit {
 
       // get Energy need estimate, protein goal
       if (data && this.FluidsInfo) {
-        if (Number.isInteger(data.yearsofLife) && this.FluidsInfo.dosingWeight) {
+        if (Number.isInteger(data.yearsofLife) && this.FluidsInfo.dosingWeightkg) {
           if (data.yearsofLife > 18) {
             if (data.height ) {
               this.updateeneargyneeds(data, this.FluidsInfo);
@@ -168,7 +170,7 @@ export class MacrosinfoComponent implements OnInit {
       if (data && this.FluidsInfo && this.TodaysInfo && this.macroInfo) {
 
         if (this.PatientInfo.daysofLife
-              && this.FluidsInfo.dosingWeight
+              && this.FluidsInfo.dosingWeightkg
               && this.macroInfo.energyrequirementgoal
               && this.TodaysInfo.tpndayNumber) {
                 this.updatelipidgoal(this.PatientInfo,
@@ -188,7 +190,7 @@ export class MacrosinfoComponent implements OnInit {
       // get lipid goal
       if (data && this.PatientInfo && this.FluidsInfo && this.macroInfo) {
         if (this.PatientInfo.daysofLife
-              && this.FluidsInfo.dosingWeight
+              && this.FluidsInfo.dosingWeightkg
               && this.macroInfo.energyrequirementgoal
               && this.TodaysInfo.tpndayNumber ) {
                 this.updatelipidgoal(this.PatientInfo,
@@ -206,7 +208,7 @@ export class MacrosinfoComponent implements OnInit {
 
       // update energy needs
       if (data && this.PatientInfo) {
-        if (data.dosingWeight && Number.isInteger(this.PatientInfo.yearsofLife)) {
+        if (data.dosingWeightkg && Number.isInteger(this.PatientInfo.yearsofLife)) {
           if (this.PatientInfo.yearsofLife > 18) {
             if (this.PatientInfo.height ) {
               this.updateeneargyneeds(this.PatientInfo, data);
@@ -223,7 +225,7 @@ export class MacrosinfoComponent implements OnInit {
       if (this.MacrosInfo.controls['lipidsperkg'].pristine) {
         if (data && this.PatientInfo && this.TodaysInfo && this.macroInfo) {
           if (this.PatientInfo.daysofLife
-                && this.FluidsInfo.dosingWeight
+                && this.FluidsInfo.dosingWeightkg
                 && this.macroInfo.energyrequirementgoal
                 && this.TodaysInfo.tpndayNumber ) {
                   this.updatelipidgoal(this.PatientInfo,
@@ -261,7 +263,6 @@ export class MacrosinfoComponent implements OnInit {
           this.MacrosInfo.controls['required'].patchValue(this.MacrosInfo.valid.valueOf());
           data.required = this.MacrosInfo.valid.valueOf();
         }
-
         this.updateMacrosInfo(data);
     },
     catchError(this._err.handleError)
@@ -275,9 +276,9 @@ export class MacrosinfoComponent implements OnInit {
       if (this.MacrosInfo.controls['lipids'].pristine) {
         if (data && this.FluidsInfo && this.TodaysInfo && this.PatientInfo) {
           console.log('lipid goal');
-          console.log(data.energyrequirement);
+          console.log(data.energyrequirementgoal);
           if ((this.PatientInfo.daysofLife)
-                && (this.FluidsInfo.dosingWeight)
+                && (this.FluidsInfo.dosingWeightkg)
                 && (data.energyrequirementgoal)
                 && (this.TodaysInfo.tpndayNumber) ) {
                   this.updatelipidgoal(this.PatientInfo,
@@ -297,10 +298,13 @@ export class MacrosinfoComponent implements OnInit {
       debounceTime(20))
       .subscribe(data => {
 
-        if (data.energyrequirementgoal
-            && data.protein
-            && data.lipids) {
-              this.updatecarbgoal(data);
+        if (this.FluidsInfo) {
+          if (this.FluidsInfo.dosingWeightkg
+              && data.energyrequirementgoal
+              && data.protein
+              && data.lipids) {
+                this.updatecarbgoal(data, this.FluidsInfo);
+          }
         }
 
     },
@@ -314,26 +318,26 @@ export class MacrosinfoComponent implements OnInit {
         if (this.MacrosInfo.controls['useGIR'].value === 'GIR') {
           if (this.FluidsInfo &&
               this.MacrosInfo.controls['GIR'].value) {
-                if (this.FluidsInfo.dosingWeight &&
+                if (this.FluidsInfo.dosingWeightkg &&
                     this.FluidsInfo.fluidVolume) {
                   this.MacrosInfo.controls['dextrose'].markAsPristine();
                   this.MacrosInfo.controls['dextrose'].patchValue(
                     MacroNutrient.GIRtoDextros(this.FluidsInfo.fluidVolume,
                       this.MacrosInfo.controls['GIR'].value,
-                      this.FluidsInfo.dosingWeight)
+                      this.FluidsInfo.dosingWeightkg)
                     );
                 }
             }
         } else {
           if (this.FluidsInfo &&
             this.MacrosInfo.controls['dextrose'].value) {
-              if (this.FluidsInfo.dosingWeight &&
+              if (this.FluidsInfo.dosingWeightkg &&
                   this.FluidsInfo.fluidVolume) {
                 this.MacrosInfo.controls['GIR'].markAsPristine();
                 this.MacrosInfo.controls['GIR'].patchValue(
                   MacroNutrient.dextrosetoGIR(this.FluidsInfo.fluidVolume,
                                               this.MacrosInfo.controls['dextrose'].value,
-                                              this.FluidsInfo.dosingWeight)
+                                              this.FluidsInfo.dosingWeightkg)
                 );
             }
           }
@@ -348,14 +352,23 @@ export class MacrosinfoComponent implements OnInit {
           if (this.FluidsInfo &&
               !this.MacrosInfo.controls['GIR'].pristine &&
               this.MacrosInfo.controls['GIR'].value) {
-                if (this.FluidsInfo.dosingWeight &&
+                if (this.FluidsInfo.dosingWeightkg &&
                     this.FluidsInfo.fluidVolume) {
+
+                  this.MacrosInfo.controls['carbs'].markAsDirty();
+                  this.MacrosInfo.controls['carbs'].markAsTouched();
+
                   this.MacrosInfo.controls['dextrose'].markAsPristine();
                   this.MacrosInfo.controls['dextrose'].patchValue(
                         MacroNutrient.GIRtoDextros(this.FluidsInfo.fluidVolume,
                           this.MacrosInfo.controls['GIR'].value,
-                          this.FluidsInfo.dosingWeight)
+                          this.FluidsInfo.dosingWeightkg)
                         );
+
+                  this.MacrosInfo.controls['carbs'].patchValue(
+                    MacroNutrient.GIRtodextrosegm(this.MacrosInfo.controls['GIR'].value,
+                      this.FluidsInfo.dosingWeightkg));
+
                }
             }
      },
@@ -368,13 +381,13 @@ export class MacrosinfoComponent implements OnInit {
           if (this.FluidsInfo &&
               !this.MacrosInfo.controls['dextrose'].pristine &&
               this.MacrosInfo.controls['dextrose'].value) {
-                if (this.FluidsInfo.dosingWeight &&
+                if (this.FluidsInfo.dosingWeightkg &&
                     this.FluidsInfo.fluidVolume) {
                   this.MacrosInfo.controls['GIR'].markAsPristine();
                   this.MacrosInfo.controls['GIR'].patchValue(
                         MacroNutrient.dextrosetoGIR(this.FluidsInfo.fluidVolume,
                                                     this.MacrosInfo.controls['dextrose'].value,
-                                                    this.FluidsInfo.dosingWeight)
+                                                    this.FluidsInfo.dosingWeightkg)
                   );
 
                 }
@@ -383,6 +396,78 @@ export class MacrosinfoComponent implements OnInit {
      catchError(this._err.handleError)
      );
 
+     // dynamic carb
+     this.MacrosInfo.controls['carbs'].valueChanges.pipe(
+      debounceTime(0))
+      .subscribe(data => {
+        if (!this.MacrosInfo.controls['carbs'].pristine) {
+          console.log('carbs ree triggered');
+          console.log(data);
+          // update protein and ree
+          if (this.MacrosInfo.controls['lipids'].value &&
+              this.MacrosInfo.controls['protein'].value) {
+            this.updatereetotal(this.MacrosInfo.controls['protein'].value,
+                              this.MacrosInfo.controls['lipids'].value,
+                              this.MacrosInfo.controls['carbs'].value);
+          }
+        }
+      },
+      catchError(this._err.handleError)
+      );
+
+     // dynamic protein
+     this.MacrosInfo.controls['proteinperkg'].valueChanges.pipe(
+      debounceTime(0))
+      .subscribe(data => {
+        if (!this.MacrosInfo.controls['proteinperkg'].pristine) {
+          console.log('protein per kg triggered');
+          console.log(data);
+          // update protein and ree
+          if (this.MacrosInfo.controls['lipids'].value &&
+              this.MacrosInfo.controls['carbs'].value &&
+              this.FluidsInfo.dosingWeightkg ) {
+            this.updateproteinbykg(data, this.MacrosInfo.controls['lipids'].value,
+                        this.MacrosInfo.controls['carbs'].value, this.FluidsInfo);
+          }
+        }
+      },
+      catchError(this._err.handleError)
+      );
+
+      this.MacrosInfo.controls['protein'].valueChanges.pipe(
+        debounceTime(0))
+        .subscribe(data => {
+
+      },
+      catchError(this._err.handleError)
+      );
+
+    // dynamic lipids
+    this.MacrosInfo.controls['lipidsperkg'].valueChanges.pipe(
+      debounceTime(0))
+        .subscribe(data => {
+          if (!this.MacrosInfo.controls['lipidsperkg'].pristine) {
+            console.log('lipid per kg triggered');
+            console.log(data);
+            // update protein and ree
+            if (this.MacrosInfo.controls['protein'].value &&
+                this.MacrosInfo.controls['carbs'].value &&
+                this.FluidsInfo.dosingWeightkg ) {
+              this.updatelipidbykg(this.MacrosInfo.controls['protein'].value, data,
+                          this.MacrosInfo.controls['carbs'].value, this.FluidsInfo);
+            }
+          }
+    },
+    catchError(this._err.handleError)
+    );
+
+    this.MacrosInfo.controls['lipids'].valueChanges.pipe(
+      debounceTime(0))
+      .subscribe(data => {
+
+      },
+      catchError(this._err.handleError)
+      );
      //this.MacrosInfo.controls['required']
      // .valueChanges.pipe(
      // debounceTime(200))
@@ -399,26 +484,30 @@ export class MacrosinfoComponent implements OnInit {
 
   updateeneargyneeds(pinfo, finfo): void {
 
-    const weight = MathConversions.converttokgs(finfo.dosingWeight, this.weightunits.find(x => x.longname === finfo.bodyweightunits).tokg);
+    const weight: number = finfo.dosingWeightkg;
     const cm = pinfo.height;
     const ageinyears = pinfo.yearsofLife;
     const gender = pinfo.gender;
     // const equation = this.energyequationlist.find(x => x.longname === this.userPrefs.calEquation).id;
-    const equation = this.energyequationlist.find(x => x.longname === this.MacrosInfo.controls['calEquation'].value).id;
+    const equation = this.energyequationlist.find( x => x.longname === this.MacrosInfo.controls['calEquation'].value).id;
     const accuracy = 2;
 
-    let x = patientdemographicscalc.reeenergyneeds(
-      weight, cm, ageinyears, gender, equation, accuracy) * .9 ;
+    // min goal
+    let x = MathConversions.roundtoaccuracy(patientdemographicscalc.reeenergyneeds(
+                weight, cm, ageinyears, gender, equation, accuracy) * .9);
+    console.log(x);
     if (x !== this.MacrosInfo.controls['energyrequirementMin'].value) {
       this.MacrosInfo.controls['energyrequirementMin'].patchValue(x);
     }
 
-    x = patientdemographicscalc.reeenergyneeds(
-      weight, cm, ageinyears, gender, equation, accuracy) * 1.1 ;
+    // max goal
+    x = MathConversions.roundtoaccuracy(patientdemographicscalc.reeenergyneeds(
+                weight, cm, ageinyears, gender, equation, accuracy) * 1.1) ;
     if (x !== this.MacrosInfo.controls['energyrequirementMax'].value) {
       this.MacrosInfo.controls['energyrequirementMax'].patchValue(x);
     }
 
+    // medium goal
     if (this.MacrosInfo.controls['energyrequirementgoal'].pristine) {
       x = patientdemographicscalc.reeenergyneeds(
         weight, cm, ageinyears, gender, equation, accuracy);
@@ -427,37 +516,46 @@ export class MacrosinfoComponent implements OnInit {
       }
     }
 
+    // cals per kg goal
     x = patientdemographicscalc.calgoalperkg(
       this.MacrosInfo.controls['energyrequirementgoal'].value, weight, accuracy);
-    if (x !== this.MacrosInfo.controls['energyrequirementperkg'].value) {
-      this.MacrosInfo.controls['energyrequirementperkg'].patchValue(x);
+    if (x !== this.MacrosInfo.controls['energyrequirementperkggoal'].value) {
+      this.MacrosInfo.controls['energyrequirementperkggoal'].patchValue(x);
     }
 
-      // console.log('####################');
-      // console.log(equation);
-      // console.log(ageinyears);
-      // console.log(this.MacrosInfo.controls['energyrequirementMin'].value)
+    // starting values for energy requirements
+    if (this.MacrosInfo.controls['energyrequirement'].pristine) {
+      x = patientdemographicscalc.reeenergyneeds(
+                weight, cm, ageinyears, gender, equation, accuracy);
+      if (x !== this.MacrosInfo.controls['energyrequirement'].value) {
+        this.MacrosInfo.controls['energyrequirement'].patchValue(x);
+      }
+    }
+
+    if (this.MacrosInfo.controls['energyrequirementperkg'].pristine) {
+      x = patientdemographicscalc.calgoalperkg(
+      this.MacrosInfo.controls['energyrequirement'].value, weight, accuracy);
+      if (x !== this.MacrosInfo.controls['energyrequirementperkg'].value) {
+        this.MacrosInfo.controls['energyrequirementperkg'].patchValue(x);
+      }
+    }
+
   }
 
   updatelipidgoal(pinfo, finfo, minfo, tinfo): void {
-      const weight = MathConversions
-                .converttokgs(finfo.dosingWeight,
-                        this.weightunits
-                        .find(x => x.longname === finfo.bodyweightunits).tokg);
+      const weight = finfo.dosingWeightkg;
 
       let y = MacroNutrient.getlipidgoalgm(weight,
                         pinfo.daysofLife,
                         minfo.energyrequirementgoal,
                         tinfo.tpndayNumber );
 
-      console.log('lipid goal');
-      console.log(y);
       y = MathConversions.roundtoaccuracy(y);
 
       if (y !== this.MacrosInfo.controls['lipidsgoal'].value) {
         this.MacrosInfo.controls['lipidsgoal'].patchValue(y);
         if (this.MacrosInfo.controls['lipidsperkg'].pristine) {
-          const ykg = MathConversions.roundtoaccuracy(y / this.FluidsInfo.dosingWeight);
+          const ykg = MathConversions.roundtoaccuracy(y / this.FluidsInfo.dosingWeightkg);
           this.MacrosInfo.controls['lipidsperkg'].patchValue(ykg);
         }
         if (this.MacrosInfo.controls['lipids'].pristine) {
@@ -467,13 +565,14 @@ export class MacrosinfoComponent implements OnInit {
 
    }
 
-    updatecarbgoal(minfo): void {
+    updatecarbgoal(minfo, finfo): void {
       const totalcals = minfo.energyrequirementgoal;
       const protein = minfo.proteingoal;
       const proteincal = Unitstable.MacroCals.find(x => x.longname === 'protein');
       const lipids = minfo.lipidsgoal;
       const lipidscal = Unitstable.MacroCals.find(x => x.longname === 'lipid');
       const carbcal = Unitstable.MacroCals.find(x => x.longname === 'carb');
+      const weight = finfo.dosingWeightkg;
 
       let y = MacroNutrient.getxgms(totalcals,
                   protein, proteincal.value,
@@ -481,15 +580,30 @@ export class MacrosinfoComponent implements OnInit {
                   carbcal.value);
       y = MathConversions.roundtoaccuracy(y);
 
-      if (y !== this.MacrosInfo.controls['carbs'].value) {
-        this.MacrosInfo.controls['carbs'].patchValue(y);
+      if (y !== this.MacrosInfo.controls['carbsgoal'].value) {
+        this.MacrosInfo.controls['carbsgoal'].patchValue(y);
       }
 
+      if (y !== this.MacrosInfo.controls['carbs'].value) {
+        if (this.MacrosInfo.controls['carbs'].pristine) {
+          this.MacrosInfo.controls['carbs'].patchValue(y);
+
+          this.MacrosInfo.controls['GIR'].patchValue(
+                MacroNutrient.dextrosegmtoGIR(this.MacrosInfo.controls['carbs'].value,
+                                            this.FluidsInfo.dosingWeightkg)
+          );
+
+          this.MacrosInfo.controls['dextrose'].patchValue(
+            MacroNutrient.GIRtoDextros(this.FluidsInfo.fluidVolume,
+              this.MacrosInfo.controls['GIR'].value,
+              this.FluidsInfo.dosingWeightkg)
+          );
+        }
+      }
   }
 
-  // protein
   updateproteingoal(pinfo, finfo): void {
-    const weight = MathConversions.converttokgs(finfo.dosingWeight, this.weightunits.find(x => x.longname === finfo.bodyweightunits).tokg);
+    const weight = finfo.dosingWeightkg;
     const ageinyears = pinfo.yearsofLife;
     const daysofLife = pinfo.daysofLife;
     const accuracy = 2;
@@ -497,6 +611,8 @@ export class MacrosinfoComponent implements OnInit {
 
       x = MacroNutrient.getproteingoal(
         weight, daysofLife, ageinyears);
+      x = MathConversions.roundtoaccuracy(x);
+      
       if (x !== this.MacrosInfo.controls['proteingoal'].value) {
           this.MacrosInfo.controls['proteingoal'].patchValue(x);
       }
@@ -521,16 +637,114 @@ export class MacrosinfoComponent implements OnInit {
 
   }
 
-  updateproteinbytotal(minfo): void {
+  // Carbs
+  updatereetotal(protein, lipids, carb): void {
+    // const protein = minfo.protein;
+    const proteincal = Unitstable.MacroCals.find(x => x.longname === 'protein');
+    // const lipids = minfo.lipids;
+    const lipidscal = Unitstable.MacroCals.find(x => x.longname === 'lipid');
+    // const carb = minfo.carbs;
+    const carbcal = Unitstable.MacroCals.find(x => x.longname === 'carb');
 
+    //console.log(minfo.carbs);
+    // update calories
+    let y = MacroNutrient.getree(
+                protein, proteincal.value,
+                lipids, lipidscal.value,
+                carb, carbcal.value);
+    y = MathConversions.roundtoaccuracy(y);
 
+    if (y !== this.MacrosInfo.controls['energyrequirement'].value) {
+      this.MacrosInfo.controls['energyrequirement'].patchValue(y);
+      this.MacrosInfo.controls['energyrequirement'].markAsDirty();
+      this.MacrosInfo.controls['energyrequirement'].markAsTouched();
+    }
 
   }
 
-  updateproteinbykg(minfo): void {
+    // protein
+  updateproteinbytotal(minfo, finfo): void {
+    const protein = minfo.protein;
+    const proteincal = Unitstable.MacroCals.find(x => x.longname === 'protein');
+    const lipids = minfo.lipidsgoal;
+    const lipidscal = Unitstable.MacroCals.find(x => x.longname === 'lipid');
+    const carb = minfo.carbs;
+    const carbcal = Unitstable.MacroCals.find(x => x.longname === 'carb');
+    const weight = finfo.dosingWeightkg;
 
+    // update calories
+    let y = MacroNutrient.getree(
+                protein, proteincal.value,
+                lipids, lipidscal.value,
+                carb, carbcal.value);
+    y = MathConversions.roundtoaccuracy(y);
 
+    if (y !== this.MacrosInfo.controls['energyrequirement'].value) {
+      this.MacrosInfo.controls['energyrequirement'].patchValue(y);
+    }
 
+    // update protein per kg
+    y = MathConversions.roundtoaccuracy( protein / weight);
+    if (y !== this.MacrosInfo.controls['proteinperkg'].value) {
+      this.MacrosInfo.controls['proteinperkg'].patchValue(y);
+    }
+  }
+
+  updateproteinbykg(protein, lipids, carb, finfo): void {
+    const weight = finfo.dosingWeightkg;
+    const proteins = MathConversions.roundtoaccuracy( protein * weight );
+    const proteincal = Unitstable.MacroCals.find(x => x.longname === 'protein');
+    // const lipids = lipids;
+    const lipidscal = Unitstable.MacroCals.find(x => x.longname === 'lipid');
+    // const carb = minfo.carbs;
+    const carbcal = Unitstable.MacroCals.find(x => x.longname === 'carb');
+
+    // update calories
+    let y = MacroNutrient.getree(
+                proteins, proteincal.value,
+                lipids, lipidscal.value,
+                carb, carbcal.value);
+    y = MathConversions.roundtoaccuracy(y);
+    console.log(proteins);
+    if (y !== this.MacrosInfo.controls['energyrequirement'].value) {
+      this.MacrosInfo.controls['energyrequirement'].patchValue(y);
+      this.MacrosInfo.controls['energyrequirement'].markAsDirty();
+      this.MacrosInfo.controls['energyrequirement'].markAsTouched();
+    }
+
+    // update protein per kg
+    if (proteins !== this.MacrosInfo.controls['protein'].value) {
+      this.MacrosInfo.controls['protein'].patchValue(proteins);
+    }
+  }
+
+  // lipids
+  updatelipidbykg(protein, lipid, carb, finfo): void {
+    const weight = finfo.dosingWeightkg;
+    const proteins = protein;
+    const proteincal = Unitstable.MacroCals.find(x => x.longname === 'protein');
+    const lipids = MathConversions.roundtoaccuracy( lipid * weight );
+    const lipidscal = Unitstable.MacroCals.find(x => x.longname === 'lipid');
+    // const carb = minfo.carbs;
+    const carbcal = Unitstable.MacroCals.find(x => x.longname === 'carb');
+
+    // update calories
+    let y = MacroNutrient.getree(
+                proteins, proteincal.value,
+                lipids, lipidscal.value,
+                carb, carbcal.value);
+    y = MathConversions.roundtoaccuracy(y);
+
+    if (y !== this.MacrosInfo.controls['energyrequirement'].value) {
+      this.MacrosInfo.controls['energyrequirement'].patchValue(y);
+      this.MacrosInfo.controls['energyrequirement'].markAsDirty();
+      this.MacrosInfo.controls['energyrequirement'].markAsTouched();
+    }
+
+    // update protein per kg
+    if (lipids !== this.MacrosInfo.controls['lipids'].value) {
+      this.MacrosInfo.controls['lipids'].patchValue(lipids);
+    }
   }
 
   updateMacrosInfo(info: IMacros): void {

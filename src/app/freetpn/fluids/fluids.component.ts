@@ -88,6 +88,7 @@ export class FluidsinfoComponent implements OnInit {
     // initialize FluidsInfo
     this.FluidsInfo = this._formBuilder.group({
       dosingWeight:  ['', Validators.required],
+      dosingWeightkg:  [''],
       use5Dayprotocol: [false],
       useDrips: [false],
       useEnteral: [''],
@@ -228,7 +229,6 @@ export class FluidsinfoComponent implements OnInit {
     catchError(this._err.handleError)
     );
 
-
     this.FluidsInfo.controls['fluidVolume'].valueChanges.pipe(
       debounceTime(0))
       .subscribe(data => {
@@ -266,9 +266,16 @@ export class FluidsinfoComponent implements OnInit {
 
     if (finfo.dosingWeight) {
 
+      const kgweight = MathConversions
+      .converttokgs(finfo.dosingWeight, this.weightunits.find(x => x.longname === finfo.bodyweightunits).tokg);
+
+      if (kgweight !== this.FluidsInfo.controls['dosingWeightkg'].value) {
+        this.FluidsInfo.controls['dosingWeightkg'].patchValue(kgweight);
+      }
+
       if (pinfo.daysofLife) {
-        const kgweight = MathConversions
-                          .converttokgs(finfo.dosingWeight, this.weightunits.find(x => x.longname === finfo.bodyweightunits).tokg);
+
+        // this.FluidsInfo.controls['dosingWeightkg'].patchValue(kgweight);
         if (finfo.use5Dayprotocol === true) {
           const volperkg = this.firstweekprotocol.find(
             x => x.id === pinfo.daysofLife
