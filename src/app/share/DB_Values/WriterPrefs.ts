@@ -32,7 +32,8 @@ export interface IWriterPrefs {
   calEquation: string;
   useGIR: boolean;
   lipidSource: string;
-  lipidPercent: number;
+  aasSource: string;
+  dextroseSource: string;
 
   // electrolytes
   sodiumunit: string;

@@ -119,16 +119,27 @@
                     </div>
                 </div>
                 <div class="d-flex flex-row flex-wrap">
-                    <div class="pr-1">
-                        <mat-form-field>
-                            <mat-select placeholder="Lipid Percent" formControlName="lipidPercent">
-                                <mat-option *ngFor="let lip of lipidPercentlist" [value]="lip.longname">
-                                    {{lip.longname}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
+                  <div class="pr-1">
+                    <mat-form-field>
+                      <mat-select placeholder="AA Solution" formControlName="aasSource">
+                          <mat-option *ngFor="let aas of aassourcelist" [value]="aas.name">
+                                {{aas.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                  </div>
+              </div>
+              <div class="d-flex flex-row flex-wrap">
+                <div class="pr-1">
+                  <mat-form-field>
+                    <mat-select placeholder="Dextrose Solution" formControlName="dextroseSource">
+                        <mat-option *ngFor="let dex of dextrosesourcelist" [value]="dex.name">
+                              {{dex.name}}
+                          </mat-option>
+                      </mat-select>
+                  </mat-form-field>
                 </div>
+            </div>
             </div>
         </div>
 

@@ -1,20 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { AuthService } from '../../share/auth/auth.service';
-import { AngularFireObject, AngularFireDatabase } from 'angularfire2/database';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireObject, AngularFireDatabase } from '@angular/fire/database';
+import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject ,  Subscription ,  of } from 'rxjs';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-import { of } from 'rxjs/observable/of';
 import { catchError, tap, map } from 'rxjs/operators';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
+
+
+
+
+
 
 import { ErrorService } from '../../share/debug/error.service';
 
@@ -50,7 +48,8 @@ export class UserPreferenceComponent implements OnInit {
   energyequationlist: any;
   carbsourcelist: any;
   lipidsourcelist: any;
-  lipidPercentlist: any;
+  aassourcelist: any;
+  dextrosesourcelist: any;
 
   weightunits: any;
   lenghthunits: any;
@@ -73,7 +72,8 @@ export class UserPreferenceComponent implements OnInit {
       this.energyequationlist = Macrotable.energyequation;
       this.carbsourcelist = Macrotable.carbsource;
       this.lipidsourcelist = Macrotable.lipidsource;
-      this.lipidPercentlist = Macrotable.lipidPercent;
+      this.aassourcelist = Macrotable.aassource;
+      this.dextrosesourcelist = Macrotable.dextrosesource;
 
       this.lenghthunits = Unitstable.lenghthunits;
       this.weightunits = Unitstable.weightunits;
@@ -114,7 +114,8 @@ export class UserPreferenceComponent implements OnInit {
       calEquation: [this.energyequationlist.find(x => x.default === '1').longname, Validators.required],
       useGIR: [this.carbsourcelist.find(x => x.default === '1').longname, Validators.required],
       lipidSource: [this.lipidsourcelist.find(x => x.default === '1').longname, Validators.required],
-      lipidPercent: [this.lipidPercentlist.find(x => x.default === '1').longname, Validators.required],
+      aasSource: [this.aassourcelist.find(x => x.default === '1').longname, Validators.required],
+      dextroseSource: [this.dextrosesourcelist.find(x => x.default === '1').longname, Validators.required],
 
       // electrolytes
       sodiumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],

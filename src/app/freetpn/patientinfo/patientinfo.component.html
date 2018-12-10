@@ -114,7 +114,7 @@
         <div class="pr-1">
             <mat-form-field>
                 <mat-select placeholder="Stresser" formControlName="stressers">
-                    <mat-option *ngFor="let stressor of stressorslist | async" [value]="stressor.stressname">
+                    <mat-option *ngFor="let stressor of (stressorslist | async)" [value]="stressor.stressname">
                         {{stressor.stressname}}
                     </mat-option>
                 </mat-select>

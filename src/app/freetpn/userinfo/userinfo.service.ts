@@ -1,23 +1,20 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import * as firebase from 'firebase/app';
 import { AuthService } from '../../share/auth/auth.service';
 
 import { WriterInfo } from '../../share/DB_Values/WriterInfo';
 
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject ,  Subscription ,  Observable ,  of } from 'rxjs';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-import { of } from 'rxjs/observable/of';
 import { catchError, tap, map } from 'rxjs/operators';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/toArray';
+
+
+
+
+
+
 
 import { ErrorService } from '../../share/debug/error.service';
 
@@ -43,7 +40,7 @@ export class UserInfoService {
 
   getCurrentUser(uid: string) {
     const userPath =  `users/${uid}`;
-    this.user = this.db.object(userPath).valueChanges();
+    this.user = this.db.object<WriterInfo>(userPath).valueChanges();
     return this.user;
   }
 

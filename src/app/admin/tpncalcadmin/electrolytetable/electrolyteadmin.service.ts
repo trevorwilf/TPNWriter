@@ -1,11 +1,13 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import * as firebase from 'firebase/app';
 
 import { Electrolytedetail, Electrolytestable } from '../../../share/DB_Values/Electrolytes';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/toArray';
+import { Observable } from 'rxjs';
+
 import * as _ from 'lodash';
 
 
@@ -30,16 +32,16 @@ export class ElectrolytesAdminService {
   getElectrolytesList(query?) {
     // const electrolytesRef = afDb.list('/globalsettings/electrolyte')
     // return this.electrolytesRef.valueChanges()
-    return this.electrolytesRef.snapshotChanges().map(arr => {
+    return this.electrolytesRef.snapshotChanges().pipe(map(arr => {
       return arr.map(snap => Object.assign(snap.payload.val(), { $key: snap.key }) );
-    });
+    }));
   }
 
 
   // Return a single observable item
   getElectrolyte(key: string): Observable<Electrolytedetail> {
     const electrolytePath = `${this.basePath}/${key}`;
-    this.electrolyte = this.db.object(electrolytePath).valueChanges();
+    this.electrolyte = this.db.object<Electrolytedetail>(electrolytePath).valueChanges();
     return this.electrolyte;
 
   }

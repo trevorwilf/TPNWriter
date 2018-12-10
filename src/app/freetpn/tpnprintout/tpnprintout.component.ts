@@ -37,12 +37,13 @@ import { Unitstable } from '../../share/DB_Values/Units';
 import { IWriterPrefs } from '../../share/DB_Values/WriterPrefs';
 
 @Component({
-  selector: 'app-additive',
-  templateUrl: './additives.component.html',
-  styleUrls: ['./additives.component.css']
+  selector: 'app-tpnprintout',
+  templateUrl: './tpnprintout.component.html',
+  styleUrls: ['./tpnprintout.component.css']
 })
 
-export class AdditiveinfoComponent implements OnInit {
+export class TPNPrintoutComponent implements OnInit {
+
   PatientInfo: IPatient;
   TodaysInfo: IPatientObservations;
   FluidsInfo: IFluids;
@@ -58,56 +59,64 @@ export class AdditiveinfoComponent implements OnInit {
   electorlytlabseunits: any;
   genderlist: any;
 
-  AdditiveInfo: FormGroup;
+  TPNPrintout: FormGroup;
 
   constructor(
     private formData: FreeTPNDataService,
     private stressorservice: StressorsService,
     private _formBuilder: FormBuilder,
     private _err: ErrorService
-  ) {}
+  ) {
+
+
+    this.weightunits = Unitstable.weightunits;
+    this.volumeunits = Unitstable.volumeunits;
+    this.calorieunits = Unitstable.calorieunits;
+    this.electorlyteunits = Unitstable.electorlyteunits;
+    this.electorlytlabseunits = Unitstable.electorlytlabseunits;
+    this.genderlist = Unitstable.Gender;
+  }
 
   ngOnInit() {
 
-    this.AdditiveInfo = this._formBuilder.group({
-      heparin: [],
-      heparinunit: [],
-      multiVitamin: [false],
-      traceelements: [false],
-      zinc: [false],
-      ironeDextran: [],
-      ironeDextranunit: [],
-      carnitine: [],
-      carnitineunit: [],
-      selenium: [],
-      seleniumunit: [],
-      famotidine: [],
-      famotidineunit: [],
+    this.TPNPrintout = this._formBuilder.group({
+      given: [''],
+      family: [''],
+      MRN: [''],
+      CSN: [''],
+      roomnumber: [''],
+      birthDate: [''],
+
+
+
+
       required: [false]
     });
 
     // changes due to external forms
-    this.formData.CurrentUserPrefInfo.pipe(debounceTime(500)).subscribe(data => {
-      this.userPrefs = data;
-      if (data) {
-          for (let element in data) {
-            if (this.AdditiveInfo.controls[element]) {
-              if (this.AdditiveInfo.controls[element].pristine) {
-                // console.log(element, this.userPrefs[element]);
-                if (this.userPrefs[element].length > 0) {
-                  this.AdditiveInfo.controls[element].patchValue(this.userPrefs[element]);
-                  this.AdditiveInfo.controls[element].markAsPristine();
-                }
-              }
-            }
-          }
-      }
-    },
-    catchError(this._err.handleError)
-    );
-
     this.formData.CurrentPatientInfo.subscribe(data => {
       this.PatientInfo = data;
+      if (data) {
+        // Add Data
+        if (data.given) {
+          this.TPNPrintout.controls['given'].patchValue(data.given);
+        }
+        if (data.family) {
+          this.TPNPrintout.controls['family'].patchValue(data.family);
+        }
+        if (data.MRN) {
+          this.TPNPrintout.controls['MRN'].patchValue(data.MRN);
+        }
+        if (data.CSN) {
+          this.TPNPrintout.controls['CSN'].patchValue(data.CSN);
+        }
+        if (data.roomnumber) {
+          this.TPNPrintout.controls['roomnumber'].patchValue(data.roomnumber);
+        }
+        if (data.birthDate) {
+          this.TPNPrintout.controls['birthDate'].patchValue(data.birthDate);
+        }
+      }
     },
     catchError(this._err.handleError)
     );
@@ -124,12 +133,6 @@ export class AdditiveinfoComponent implements OnInit {
     catchError(this._err.handleError)
     );
 
-    this.formData.CurrentElectrolyteInfo.subscribe(data => {
-      this.electrolyteInfo = data;
-    },
-    catchError(this._err.handleError)
-    );
-
     this.formData.CurrentAdditiveInfo.subscribe(data => {
       this.additiveInfo = data;
     },
@@ -142,37 +145,40 @@ export class AdditiveinfoComponent implements OnInit {
     catchError(this._err.handleError)
     );
 
-    // Dynamic internal changes
-    this.AdditiveInfo.valueChanges
-      .subscribe(data => {
-
-        if (this.AdditiveInfo.valid !== this.AdditiveInfo.controls['required'].value) {
-          this.AdditiveInfo.controls['required'].patchValue(this.AdditiveInfo.valid);
-          data.required = this.AdditiveInfo.valid.valueOf();
-        }
-        this.updateAdditiveInfo(data);
+    this.formData.CurrentElectrolyteInfo.subscribe(data => {
+      this.electrolyteInfo = data;
     },
     catchError(this._err.handleError)
     );
 
-    //this.AdditiveInfo.controls['required']
-    //.valueChanges.pipe(
-    //debounceTime(200))
-    //.subscribe(data => {
-    //  this.AdditiveInfo.controls['required'].patchValue(this.AdditiveInfo.valid);
-    //},
-    //catchError(this._err.handleError)
-   // );
+    // Dynamic internal changes
+    this.TPNPrintout.valueChanges.pipe(debounceTime(50)).subscribe(data => {
+      this.updateTPNPrintout(data);
 
-    //   this.AdditiveInfo.controls['dripVolume'].valueChanges
+      if (this.TPNPrintout.valid !== this.TPNPrintout.controls['required'].value) {
+        this.TPNPrintout.controls['required'].patchValue(this.TPNPrintout.valid);
+      }
+    },
+    catchError(this._err.handleError)
+    );
+
+    this.TPNPrintout.controls['required']
+    .valueChanges.pipe(
+    debounceTime(200))
+    .subscribe(data => {
+      this.TPNPrintout.controls['required'].patchValue(this.TPNPrintout.valid);
+    },
+    catchError(this._err.handleError)
+    );
+    //   this.TPNPrintout.controls['dripVolume'].valueChanges
     //     .debounceTime(200)
     //     .subscribe(data => {});
     //
   }
 
-  updateAdditiveInfo(info: IAdditive): void {
+  updateTPNPrintout(info: IAdditive): void {
     // this.formData.changeAdditiveInfoSource(info.getRawValue());
-    this.formData.changeAdditiveInfoSource(info);
+    // this.formData.changeAdditiveInfoSource(info);
     // console.log('## updateadditive  ##');
     // console.log(info.getRawValue());
     // console.log(info);
@@ -182,7 +188,7 @@ export class AdditiveinfoComponent implements OnInit {
 
 
   hasFormErrors() {
-    return !this.AdditiveInfo.valid;
+    return !this.TPNPrintout.valid;
   }
 
   // writetoconsolepi(info) {

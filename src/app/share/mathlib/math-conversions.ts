@@ -19,11 +19,16 @@ export class MathConversions {
         return mm;
     }
 
-    // weights - we convert everything to grams for
+    // weights - we convert everything to kilograms for
     // internal calc.
     static converttokgs(weight: number, fact: number) {
       return weight * fact;
     }
 
+    // fluids - we convert everything to ml for
+    // internal calc.
+    static converttomls(volume: number, fact: number) {
+      return volume * fact;
+    }
 }
 

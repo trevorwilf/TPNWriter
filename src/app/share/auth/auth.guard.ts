@@ -1,10 +1,12 @@
+
+import {tap, map, take} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { AngularFireAuth } from 'angularfire2/auth';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/take';
+import { Observable } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/auth';
+
+
+
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -15,15 +17,15 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | boolean {
 
-      return this.afAuth.authState
-           .take(1)
-           .map(user => !!user)
-           .do(loggedIn => {
+      return this.afAuth.authState.pipe(
+           take(1),
+           map(user => !!user),
+           tap(loggedIn => {
              if (!loggedIn) {
                console.log('access denied');
                this.router.navigate(['/login']);
              }
-         });
+         }),);
 
   }
 }

@@ -15,7 +15,15 @@
         </mat-form-field>
         </div>
     </div>
-
+    <div class="d-flex flex-row flex-wrap">
+      <div class="pr-1">
+        <p>Time in minutes:
+          <mat-form-field class="small">
+            <input matInput placeholder="min" formControlName="overxminutes" >
+          </mat-form-field>
+        </p>
+      </div>
+    </div>
     <!-- Section for babies -->
     <div *ngIf="PatientInfo?.daysofLife < 365">
         <div *ngIf="PatientInfo?.daysofLife < 8">
@@ -57,7 +65,7 @@
     <!-- Final Volume -->
     <div class="d-flex flex-row flex-wrap">
       <div class="pr-1">
-        <p>Total Initial Volume (mL\day): {{FluidsInfo.get('initialVolume').value}} </p>
+        <p>Total Initial Volume (mL/day): {{FluidsInfo.get('initialVolume').value}} </p>
       </div>
     </div>
     <div class="d-flex flex-row flex-wrap">

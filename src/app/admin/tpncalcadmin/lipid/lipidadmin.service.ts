@@ -1,5 +1,7 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import * as firebase from 'firebase/app';
 
 import {
@@ -7,8 +9,8 @@ import {
   Lipidsngtable
 } from '../../../share/DB_Values/Lipids';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/toArray';
+import { Observable } from 'rxjs';
+
 import * as _ from 'lodash';
 
 
@@ -33,16 +35,16 @@ export class ILipidsAdminService {
   getIvroutesList(query?) {
     // const lipidsRef = afDb.list('/globalsettings/lipid')
     // return this.lipidsRef.valueChanges()
-    return this.lipidsRef.snapshotChanges().map(arr => {
+    return this.lipidsRef.snapshotChanges().pipe(map(arr => {
       return arr.map(snap => Object.assign(snap.payload.val(), { $key: snap.key }) );
-    });
+    }));
   }
 
 
   // Return a single observable item
   getIvroute(key: string): Observable<ILipids> {
     const lipidPath = `${this.basePath}/${key}`;
-    this.lipid = this.db.object(lipidPath).valueChanges();
+    this.lipid = this.db.object<ILipids>(lipidPath).valueChanges();
     return this.lipid;
 
   }

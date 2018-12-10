@@ -1,6 +1,14 @@
 # TPNWriter
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.4.5.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.4.
+
+# Node Version
+
+The current Node version is 8.11.3
+
+# 3rd Party tools not list in Package.json
+ncu - looks for package updates
+webpack - for compiling code 
 
 ## Development server
 

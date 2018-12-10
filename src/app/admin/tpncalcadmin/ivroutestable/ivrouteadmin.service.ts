@@ -1,11 +1,13 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import * as firebase from 'firebase/app';
 
 import { IIVRoutes, IVRoutesngtable } from '../../../share/DB_Values/IVRoute';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/toArray';
+import { Observable } from 'rxjs';
+
 import * as _ from 'lodash';
 
 
@@ -30,16 +32,16 @@ export class IIVRoutesAdminService {
   getIvroutesList(query?) {
     // const ivroutesRef = afDb.list('/globalsettings/ivroute')
     // return this.ivroutesRef.valueChanges()
-    return this.ivroutesRef.snapshotChanges().map(arr => {
+    return this.ivroutesRef.snapshotChanges().pipe(map(arr => {
       return arr.map(snap => Object.assign(snap.payload.val(), { $key: snap.key }) );
-    });
+    }));
   }
 
 
   // Return a single observable item
   getIvroute(key: string): Observable<IIVRoutes> {
     const ivroutePath = `${this.basePath}/${key}`;
-    this.ivroute = this.db.object(ivroutePath).valueChanges();
+    this.ivroute = this.db.object<IIVRoutes>(ivroutePath).valueChanges();
     return this.ivroute;
 
   }

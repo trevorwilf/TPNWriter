@@ -10,7 +10,7 @@ export class FluidCalc {
     // Based on the Holliday-Segar method for calculating maintenance fluid requirements in children.
     // let newweight: number = dosingWeight / 1000;
     let stageweight: number = null;
-    let returnvol: number = 0;
+    let returnvol = 0;
     if (dosingWeight - 20 > 0) {
       stageweight = dosingWeight - 20;
       returnvol = 1500 + 20 * stageweight;

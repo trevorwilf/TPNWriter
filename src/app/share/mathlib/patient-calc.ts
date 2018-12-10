@@ -92,36 +92,37 @@ export class patientdemographicscalc {
         //  source https://www.uptodate.com/contents/parenteral-nutrition-in-premature-infants
         // premature infants  80 to 100 kcal/kg   <- should we list pramature as a stresser
         // console.log('age in years ', ageinyears)
+        let ree = 0;
         if (ageinyears >= 18) {
           switch (equation) {
               // option1: Harris-Benedict equation
+              case 0:
+                  if (gender === 'male') {
+                      // patient is male
+                      ree = 66.5 + (13.75 * weight) + (5.003 * cm) - (6.755 * ageinyears);
+                  } else {
+                      // patient is female
+                      ree = 655.1 + (9.563 * weight) + (1.850 * cm) - (4.676 * ageinyears);
+                  }
+                  break;
+              // Option2: Roza and Shizgal
               case 1:
-                  if (gender == 'male') {
-                      //patient is male
-                      var ree = 66.5 + (13.75 * weight) + (5.003 * cm) - (6.755 * ageinyears);
+                  if (gender === 'male') {
+                      // patient is male
+                      ree = 88.362 + (13.397 * weight) + (4.799 * cm) - (5.677 * ageinyears);
                   } else {
-                      //patient is female
-                      var ree = 655.1 + (9.563 * weight) + (1.850 * cm) - (4.676 * ageinyears);
+                      // patient is female
+                      ree = 447.593 + (9.247 * weight) + (3.098 * cm) - (4.330 * ageinyears);
                   }
                   break;
-              //Option2: Roza and Shizgal
+              // Option3: Mifflin and St Jeor
               case 2:
-                  if (gender == 'male') {
-                      //patient is male
-                      var ree = 88.362 + (13.397 * weight) + (4.799 * cm) - (5.677 * ageinyears);
+                  if (gender === 'male') {
+                      // patient is male
+                      ree = (10 * weight) + (6.25 * cm) - (5 * ageinyears) + 5;
                   } else {
-                      //patient is female
-                      var ree = 447.593 + (9.247 * weight) + (3.098 * cm) - (4.330 * ageinyears);
-                  }
-                  break;
-              //Option3: Mifflin and St Jeor
-              case 3:
-                  if (gender == 'male') {
-                      //patient is male
-                      var ree = (10 * weight) + (6.25 * cm) - (5 * ageinyears) + 5;
-                  } else {
-                      //patient is female
-                      var ree = (10 * weight) + (6.25 * cm) - (5 * ageinyears) - 161;
+                      // patient is female
+                      ree = (10 * weight) + (6.25 * cm) - (5 * ageinyears) - 161;
                   }
                   break;
                 }
@@ -143,8 +144,12 @@ export class patientdemographicscalc {
                 }
               }
 
-        return MathConversions.roundtoaccuracy(ree, accuracy);
-
+        if (ree > 0) {
+          return MathConversions.roundtoaccuracy(ree, accuracy);
+        } else {
+          ree = null;
+          return ree;
+        }
     }
 
     static calgoalperkg(ree: number, weight: number, accuracy:number = 2) {
@@ -167,8 +172,8 @@ export class patientdemographicscalc {
         //
         //  source https://www.uptodate.com/contents/parenteral-nutrition-in-premature-infants
         // premature infants
-        let newree = ree*stresser;
-        return MathConversions.roundtoaccuracy(ree, accuracy);
+        let newree = ree * stresser;
+        return MathConversions.roundtoaccuracy(newree, accuracy);
     }
 
 }

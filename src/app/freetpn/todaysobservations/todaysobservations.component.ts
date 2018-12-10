@@ -1,18 +1,17 @@
+
+import {debounceTime,  catchError, tap, map } from 'rxjs/operators';
 import { Component, OnInit, ElementRef, Output } from '@angular/core';
 import { NgSwitch } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem } from 'primeng/primeng';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject ,  Subscription ,  of, timer } from 'rxjs';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-import { of } from 'rxjs/observable/of';
-import { catchError, tap, map } from 'rxjs/operators';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
+
+
+
+
+
 
 import { ErrorService } from '../../share/debug/error.service';
 
@@ -141,7 +140,7 @@ export class TodaysobservationsComponent implements OnInit {
     });
 
     // changes due to external forms
-    this.formData.CurrentUserPrefInfo.debounceTime(200).subscribe(data => {
+    this.formData.CurrentUserPrefInfo.pipe(debounceTime(200)).subscribe(data => {
       this.userPrefs = data;
       if (data) {
           for (let element in data) {
@@ -193,27 +192,24 @@ export class TodaysobservationsComponent implements OnInit {
     this.TodaysInfo.controls['todaydate'].markAsDirty();
     this.TodaysInfo.controls['todaydate'].markAsTouched();
 
+    //////////////////////////////////////////////
     // Dynamic internal changes
+
     this.TodaysInfo.valueChanges
-      .debounceTime(200)
       .subscribe(data => {
-        this.updateTodaysInfo(data);
 
         if (this.TodaysInfo.valid !== this.TodaysInfo.controls['required'].value) {
-          this.TodaysInfo.controls['required'].patchValue(this.TodaysInfo.valid);
+          this.TodaysInfo.controls['required'].patchValue(this.TodaysInfo.valid.valueOf());
+          data.required = this.TodaysInfo.valid.valueOf();
         }
+
+        this.updateTodaysInfo(data);
+
       },
       catchError(this._err.handleError)
       );
 
-      this.TodaysInfo.controls['required']
-      .valueChanges
-      .debounceTime(200)
-      .subscribe(data => {
-        this.TodaysInfo.controls['required'].patchValue(this.TodaysInfo.valid);
-      },
-      catchError(this._err.handleError)
-      );
+
   }
 
   updateTodaysInfo(info: IPatientObservations): void {

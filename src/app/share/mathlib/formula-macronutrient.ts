@@ -13,11 +13,23 @@ export class MacroNutrient {
         // returns the calories of the macro
         // x = amount of macro (protein, carb, lipid)
         // y = cal per macro
-        var macrocal = macro * macrocalpergram;
+        const macrocal = macro * macrocalpergram;
         return macrocal;
     }
 
-    static getxgms(macro1:number, macro2:number, macro3cal:number, calgoal:number) {
+    static getree(
+      macro1: number, macro1cal: number,
+      macro2: number, macro2cal: number,
+      macro3: number, macro3cal: number) {
+
+        const ree = ((macro1 * macro1cal) + (macro2 * macro2cal) + (macro3 * macro3cal));
+        return ree;
+      }
+
+    static getxgms(calgoal: number,
+                    macro1: number, macro1cal: number,
+                    macro2: number, macro2cal: number,
+                    macro3cal: number) {
         //  This is easily done by taking goal calories, subtracting calories provided from protein and lipid, and dividing the remaining calories by 3.4 kcal/gram to get g of dextrose.
         //  450 kcal - 40 kcal (amino acids) - 150 kcal (lipid) = 260 kcal from dextrose 260 kcal/ 3.4 kcal/ gram = 76 grams dextrose. 76 g/ 500 cc TPN = 15.3 %
         //  (can round to nearest .5%, so 15.5%) Start TPN at 10 - 12.5 % and advance by 2.5% qd to goal of 15.5%
@@ -25,13 +37,13 @@ export class MacroNutrient {
         //  x = could be protein, carb or fat
         //  y = could be protein, carb or fat (just not what ever x was)
         //  z = calories per gram of remaining macro (ie what ever x&y was not)
-        var gms = (calgoal - macro1 - macro2) / macro3cal;
+        var gms = (calgoal - (macro1 * macro1cal) - (macro2 * macro2cal)) / macro3cal;
         return gms;
     }
 
     ///////////////
-    //protein section
-    static getproteingoal(weight:number, daysofLife:number, ageinyears: number) {
+    // protein section
+    static getproteingoal(weight: number, daysofLife: number, ageinyears: number) {
       // https://www.uptodate.com/contents/parenteral-nutrition-in-infants-and-children
       // Preterm neonate – 3 to 4 g/kg/day
       // Infants (1 to 12 months) – 2 to 3 g/kg/day
@@ -59,11 +71,11 @@ export class MacroNutrient {
         return x;
     }
 
-    static getproteingoalstresser(weight:number, stresser:number) {
+    static getproteingoalstresser(weight: number, stresser: number) {
         //  Goal for this (5 kg at birth) infant is 2 g/kg = 10 g; 10g/500 cc = 2 %. 10 grams x 4 kcal/g = 40 kcal. http://www.nutritioncare.org/NBPNS/Curriculum_Guide_for_Physician_Nutrition_Specialists/Curriculum_Guide_Table_of_Contents/Nutrition_Support/Pediatric/QUICK_REFERENCE_GUIDE_TO_WRITING_PEDIATRIC_TPN/
         //  Goal for this premature infant (1.5) is 3.5 g/kg = 5.25 g; 10g/500 cc = 1.05 %. 5.25 grams x 4 kcal/g = 21 kcal. https://www.uptodate.com/contents/parenteral-nutrition-in-premature-infants#H5
         //
-        var proteingms = weight * stresser;
+        const proteingms = weight * stresser;
         return proteingms;
     }
 
@@ -74,25 +86,57 @@ export class MacroNutrient {
 
     ///////////////
     //lipid section
-    static getlipidgoal(weight:number, tolerance:number) {
-        // expect all weights to be in grams coming in
+    static getlipidgoalgm(weight: number, daysofLife: number,
+                energygoal: number, tpnday: number) {
+        // expect all weights to be in kgrams coming in
         //  http://www.nutritioncare.org/NBPNS/Curriculum_Guide_for_Physician_Nutrition_Specialists/Curriculum_Guide_Table_of_Contents/Nutrition_Support/Pediatric/QUICK_REFERENCE_GUIDE_TO_WRITING_PEDIATRIC_TPN/
         //  Calculate a TPN solution for a 6 mo, 5 kg infant, w/ diarrhea, feeding intolerance, & moderately underweigh
         //  For our patient it is 3.0 g/kg. This is 15 grams
         //  15g x 10 kcal/ g = 150 kcal.
-        //  Goal volume of 20% lipid needed is 75 cc.Start with 1g/ kg / day = 5 g/ .2 = 25 cc lipid.
+        //  Goal volume of 20% lipid needed is 75 cc = (150 kcal) / (2.0 kcal/cc)
+        //     10% fat emulsion: 1.1 kcal/cc
+        //     20% fat emulsion: 2.0 kcal/cc
+        //     30% fat emulsion: 3.0 kcal/cc
+        //  Start with 1g/ kg / day = 5g / .2 = 25 cc lipid.
         //  Advance by 1g/ kg daily as tolerated to 3 g/ kg / d.
         //
         //
-        var lipidgms = weight * tolerance;
-        return lipidgms;
 
+        let lipidgms = 0;
+        if (daysofLife > 6570) {
+          // over 18 years old
+          lipidgms = ((energygoal * ( 3 / 10 )) / 9);
+        } else {
+          if (daysofLife > 3650) {
+            // over 10 years old
+            if (tpnday > 1) {
+              lipidgms = weight * 2;
+            } else {
+              lipidgms = weight * 1;
+            }
+          } else {
+            // under 10 years old
+            if (tpnday > 2) {
+              lipidgms = weight * 3;
+            } else {
+              if (tpnday > 1) {
+                lipidgms = weight * 2;
+              } else {
+                lipidgms = weight * 1;
+              }
+            }
+          }
+        }
+
+        // return lipidgms;
+        return MathConversions.roundtoaccuracy(lipidgms);
     }
 
 
     ///////////////
     //carb section
-    static getcarbgoal(calspergramcarb:number, proteincals:number, lipidcals:number, calgoal:number) {
+    static getcarbgoal(calspergramcarb: number,
+                        proteincals: number, lipidcals: number, calgoal: number) {
         //  This is easily done by taking goal calories, subtracting calories provided from protein and lipid, and dividing the remaining calories by 3.4 kcal/gram to get g of dextrose.
         //  450 kcal - 40 kcal (amino acids) - 150 kcal (lipid) = 260 kcal from dextrose 260 kcal/ 3.4 kcal/ gram = 76 grams dextrose. 76 g/ 500 cc TPN = 15.3 %
         //  (can round to nearest .5%, so 15.5%) Start TPN at 10 - 12.5 % and advance by 2.5% qd to goal of 15.5%
@@ -122,5 +166,37 @@ export class MacroNutrient {
       const x = ((((GIR * dosingWeight * minutes) / vol) * 100 ) / 1000);
       return MathConversions.roundtoaccuracy(x);
       }
+
+
+    static dextrosegmtoGIR(dextrosegm: number, dosingWeight: number, minutes: number = 1440) {
+      const x = ((dextrosegm / dosingWeight ) * 1000) / minutes;
+      return MathConversions.roundtoaccuracy(x);
+      }
+
+    static GIRtodextrosegm(gir: number, dosingWeight: number, minutes: number = 1440) {
+      const x = dosingWeight * ((gir * minutes ) / 1000);
+      return MathConversions.roundtoaccuracy(x);
+      }
+
+    static dextrosetodextrosegm(dextrose: number, dosingWeight: number, minutes: number = 1440) {
+      const x = ((dextrose * minutes ) / 1000) / dosingWeight;
+      return MathConversions.roundtoaccuracy(x);
+      }
+
+    static volneededml(total: number, startsolutionpercent: number) {
+      const x = (total * 100) / startsolutionpercent;
+      return MathConversions.roundtoaccuracy(x);
+    }
+
+    static finalconcentration(total: number, startsolutionpercent: number, totalvolume: number) {
+      const x = (100) * (total / totalvolume);
+      return MathConversions.roundtoaccuracy(x);
+    }
+
+    static mosmcalc(vol: number, mosm_L: number) {
+      // mOsm/L must be concerted to ml because vol is in ml
+      const x = vol * ( mosm_L / 1000 );
+      return MathConversions.roundtoaccuracy(x);
+    }
 
 }

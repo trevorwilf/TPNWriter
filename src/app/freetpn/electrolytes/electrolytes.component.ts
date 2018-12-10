@@ -1,18 +1,17 @@
+
+import {debounceTime,  catchError, tap, map } from 'rxjs/operators';
 import { Component, OnInit, ElementRef, Output } from '@angular/core';
 import { NgSwitch } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem } from 'primeng/primeng';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject ,  Subscription ,  of } from 'rxjs';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-import { of } from 'rxjs/observable/of';
-import { catchError, tap, map } from 'rxjs/operators';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
+
+
+
+
+
 
 import { ErrorService } from '../../share/debug/error.service';
 
@@ -88,7 +87,7 @@ export class ElectrolyteinfoComponent implements OnInit {
       calcium: [],
       calciumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
       phosphorus: [],
-      phosphorusunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
+      phosphorusunit: [this.electorlyteunits.find(x => x.id === 2).longname, Validators.required],
       acetate: [],
       acetateunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
       magnesium: [],
@@ -98,7 +97,7 @@ export class ElectrolyteinfoComponent implements OnInit {
     });
 
     // changes due to external forms
-    this.formData.CurrentUserPrefInfo.debounceTime(200).subscribe(data => {
+    this.formData.CurrentUserPrefInfo.pipe(debounceTime(100)).subscribe(data => {
       this.userPrefs = data;
       if (data) {
           for (let element in data) {
@@ -119,7 +118,9 @@ export class ElectrolyteinfoComponent implements OnInit {
 
     this.formData.CurrentPatientInfo.subscribe(data => {
       this.PatientInfo = data;
-    });
+    },
+    catchError(this._err.handleError)
+    );
 
     this.formData.CurrentTodaysInfo.subscribe(data => {
       this.TodaysInfo = data;
@@ -146,19 +147,21 @@ export class ElectrolyteinfoComponent implements OnInit {
     );
 
     // Dynamic internal changes
-    this.ElectrolyteInfo.valueChanges.debounceTime(50).subscribe(data => {
-      this.updateElectrolyteInfo(data);
+    this.ElectrolyteInfo.valueChanges
+      .subscribe(data => {
 
-      if (this.ElectrolyteInfo.valid !== this.ElectrolyteInfo.controls['required'].value) {
-        this.ElectrolyteInfo.controls['required'].patchValue(this.ElectrolyteInfo.valid);
-      }
+        if (this.ElectrolyteInfo.valid !== this.ElectrolyteInfo.controls['required'].value) {
+          this.ElectrolyteInfo.controls['required'].patchValue(this.ElectrolyteInfo.valid);
+          data.required = this.ElectrolyteInfo.valid.valueOf();
+        }
+        this.updateElectrolyteInfo(data);
     },
     catchError(this._err.handleError)
     );
 
     this.ElectrolyteInfo.controls['required']
-    .valueChanges
-    .debounceTime(200)
+    .valueChanges.pipe(
+    debounceTime(200))
     .subscribe(data => {
       this.ElectrolyteInfo.controls['required'].patchValue(this.ElectrolyteInfo.valid);
     },

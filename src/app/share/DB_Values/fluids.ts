@@ -2,6 +2,7 @@
 
 export interface IFluids {
   dosingWeight?: number;
+  dosingWeightkg?: number;
   bodyweightunits?: string;
   use5Dayprotocol?: boolean;
   useDrips?: boolean;
@@ -11,6 +12,7 @@ export interface IFluids {
   enteralVolume?: number;
   enteralVolumeunit?: number;
   fluidVolume?: number;
+  overxminutes?: number;
   fluidVolumeunit?: number;
   fluidRate?: number;
   notes: string;

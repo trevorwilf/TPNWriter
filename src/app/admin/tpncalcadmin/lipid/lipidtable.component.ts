@@ -6,32 +6,31 @@ import {
   AngularFireDatabase,
   AngularFireList,
   AngularFireObject
-} from 'angularfire2/database';
+} from '@angular/fire/database';
 import * as firebase from 'firebase/app';
 
 import { LocalDataSource, ServerDataSource } from 'ng2-smart-table';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { Subscription ,  Observable } from 'rxjs';
 
 import {
   ILipids,
   Lipidsngtable
 } from '../../../share/DB_Values/Lipids';
 import { ILipidsAdminService } from './lipidadmin.service';
-import 'rxjs/add/operator/toArray';
+
 // Observable class extensions
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/throw';
+
+
 
 // Observable operators
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/first';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/mergeMap';
+
+
+
+
+
+
+
+
 
 @Component({
   selector: "app-lipidtable",

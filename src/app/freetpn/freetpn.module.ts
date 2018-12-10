@@ -27,6 +27,7 @@ import { FluidsinfoComponent } from './fluids/fluids.component';
 import { MacrosinfoComponent } from './macros/macros.component';
 import { ElectrolyteinfoComponent } from './electrolytes/electrolytes.component';
 import { AdditiveinfoComponent } from './additives/additives.component';
+import { TPNPrintoutComponent } from './tpnprintout/tpnprintout.component';
 
 
 @NgModule({
@@ -56,6 +57,7 @@ import { AdditiveinfoComponent } from './additives/additives.component';
     FluidsinfoComponent,
     MacrosinfoComponent,
     ElectrolyteinfoComponent,
-    AdditiveinfoComponent]
+    AdditiveinfoComponent,
+    TPNPrintoutComponent]
 })
 export class FreetpnModule { }

@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject ,  Subscription ,  Observable ,  of } from 'rxjs';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-import { of } from 'rxjs/observable/of';
 import { catchError, tap, map } from 'rxjs/operators';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/toArray';
+
+
+
+
+
+
 
 import { ErrorService } from '../../share/debug/error.service';
 
@@ -71,31 +68,37 @@ export class FreeTPNDataService {
 
   changeTodaysInfoSource(update: IPatientObservations) {
     this.TodaysInfoSource.next(update);
+    this._err.writetoconsole(this.CurrentTodaysInfo);
     // console.log(this.TodaysInfoSource);
   }
 
   changeFluidsInfoSource(update: IFluids) {
     this.FluidsInfoSource.next(update);
+    this._err.writetoconsole(this.CurrentFluidsInfo);
     // console.log(this.FluidsInfoSource);
   }
 
   changeMacrosInfoSource(update: IMacros) {
     this.MacrosInfoSource.next(update);
+    this._err.writetoconsole(this.CurrentMacrosInfo);
     // console.log(this.MacrosInfoSource);
   }
 
   changeElectrolyteInfoSource(update: IElectrolyte) {
     this.ElectrolyteInfoSource.next(update);
+    this._err.writetoconsole(this.CurrentElectrolyteInfo);
     // console.log(this.ElectrolyteInfoSource);
   }
 
   changeAdditiveInfoSource(update: IAdditive) {
     this.AdditiveInfoSource.next(update);
+    this._err.writetoconsole(this.CurrentAdditiveInfo);
     // console.log(this.AdditiveInfoSource);
   }
 
   changeCurrentUserPrefInfo(update: IWriterPrefs) {
     this.UserPrefInfoSource.next(update);
+    // this._err.writetoconsole(this.CurrentUserPrefInfo);
     // console.log(this.UserPrefInfoSource);
   }
 }
