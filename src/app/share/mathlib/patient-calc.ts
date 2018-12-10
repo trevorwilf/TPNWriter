@@ -172,8 +172,8 @@ export class patientdemographicscalc {
         //
         //  source https://www.uptodate.com/contents/parenteral-nutrition-in-premature-infants
         // premature infants
-        let newree = ree*stresser;
-        return MathConversions.roundtoaccuracy(ree, accuracy);
+        let newree = ree * stresser;
+        return MathConversions.roundtoaccuracy(newree, accuracy);
     }
 
 }

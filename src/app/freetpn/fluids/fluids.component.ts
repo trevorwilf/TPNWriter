@@ -95,6 +95,7 @@ export class FluidsinfoComponent implements OnInit {
       dripVolume: [''],
       initialVolume: ['', Validators.required],
       fluidVolume: ['', Validators.required],
+      overxminutes: ['1440', Validators.required],
       fluidRate: [''],
 
       bodyweightunits: [this.weightunits.find(x => x.default === '1').longname, Validators.required],
@@ -178,6 +179,19 @@ export class FluidsinfoComponent implements OnInit {
     catchError(this._err.handleError)
     );
 
+    this.formData.CurrentMacrosInfo.subscribe(data => {
+      this.macroInfo = data;
+      if (this.macroInfo) {
+        if (this.macroInfo.totalvolofmacros) {
+          if (this.macroInfo.totalvolofmacros > this.FluidsInfo.controls['fluidVolume'].value) {
+
+          }
+        }
+      }
+    },
+    catchError(this._err.handleError)
+    );
+
     this.formData.CurrentElectrolyteInfo.subscribe(data => {
       this.electrolyteInfo = data;
     },
@@ -186,12 +200,6 @@ export class FluidsinfoComponent implements OnInit {
 
     this.formData.CurrentAdditiveInfo.subscribe(data => {
       this.additiveInfo = data;
-    },
-    catchError(this._err.handleError)
-    );
-
-    this.formData.CurrentMacrosInfo.subscribe(data => {
-      this.macroInfo = data;
     },
     catchError(this._err.handleError)
     );
@@ -233,11 +241,22 @@ export class FluidsinfoComponent implements OnInit {
       debounceTime(0))
       .subscribe(data => {
         if (!this.FluidsInfo.controls['fluidVolume'].pristine) {
-          this.getfluidperhour(data, 24);
+          const minutes = this.FluidsInfo.controls['overxminutes'].value;
+          this.getfluidperhour(data, minutes);
         }
       },
       catchError(this._err.handleError)
       );
+
+      this.FluidsInfo.controls['overxminutes'].valueChanges.pipe(
+        debounceTime(0))
+        .subscribe(data => {
+          const vol = this.FluidsInfo.controls['fluidVolume'].value;
+          this.getfluidperhour(vol, data);
+
+        },
+        catchError(this._err.handleError)
+        );
 
       //this.FluidsInfo.controls['required']
       //.valueChanges.pipe(
@@ -317,18 +336,20 @@ export class FluidsinfoComponent implements OnInit {
 
         //
         fvol = MathConversions.roundtoaccuracy(fvol);
+        const minutes = finfo.overxminutes;
         if (fvol !== this.FluidsInfo.controls['fluidVolume'].value) {
           // console.log(fvol);
           // console.log(this.FluidsInfo.controls['fluidVolume'].value);
 
           this.FluidsInfo.controls['fluidVolume'].patchValue(fvol);
-          this.getfluidperhour(fvol, 24);
+          this.getfluidperhour(fvol, minutes);
         }
       }
     }
   }
 
-  getfluidperhour(fvol: number, hours: number = 24) {
+  getfluidperhour(fvol: number, minutes: number = 1440) {
+    const hours = minutes / 60;
     this.FluidsInfo.controls['fluidRate'].patchValue(MathConversions.roundtoaccuracy(fvol / hours));
   }
 

@@ -103,22 +103,27 @@ export class MacroNutrient {
         //
 
         let lipidgms = 0;
-        if (daysofLife > 3650) {
-          // over 10 years old
-          if (tpnday > 1) {
-            lipidgms = weight * 2;
-          } else {
-            lipidgms = weight * 1;
-          }
+        if (daysofLife > 6570) {
+          // over 18 years old
+          lipidgms = ((energygoal * ( 3 / 10 )) / 9);
         } else {
-          // under 10 years old
-          if (tpnday > 2) {
-            lipidgms = weight * 3;
-          } else {
+          if (daysofLife > 3650) {
+            // over 10 years old
             if (tpnday > 1) {
               lipidgms = weight * 2;
             } else {
               lipidgms = weight * 1;
+            }
+          } else {
+            // under 10 years old
+            if (tpnday > 2) {
+              lipidgms = weight * 3;
+            } else {
+              if (tpnday > 1) {
+                lipidgms = weight * 2;
+              } else {
+                lipidgms = weight * 1;
+              }
             }
           }
         }
@@ -177,4 +182,21 @@ export class MacroNutrient {
       const x = ((dextrose * minutes ) / 1000) / dosingWeight;
       return MathConversions.roundtoaccuracy(x);
       }
+
+    static volneededml(total: number, startsolutionpercent: number) {
+      const x = (total * 100) / startsolutionpercent;
+      return MathConversions.roundtoaccuracy(x);
+    }
+
+    static finalconcentration(total: number, startsolutionpercent: number, totalvolume: number) {
+      const x = (100) * (total / totalvolume);
+      return MathConversions.roundtoaccuracy(x);
+    }
+
+    static mosmcalc(vol: number, mosm_L: number) {
+      // mOsm/L must be concerted to ml because vol is in ml
+      const x = vol * ( mosm_L / 1000 );
+      return MathConversions.roundtoaccuracy(x);
+    }
+
 }

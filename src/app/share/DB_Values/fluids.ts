@@ -12,6 +12,7 @@ export interface IFluids {
   enteralVolume?: number;
   enteralVolumeunit?: number;
   fluidVolume?: number;
+  overxminutes?: number;
   fluidVolumeunit?: number;
   fluidRate?: number;
   notes: string;

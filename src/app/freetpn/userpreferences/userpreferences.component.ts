@@ -48,7 +48,8 @@ export class UserPreferenceComponent implements OnInit {
   energyequationlist: any;
   carbsourcelist: any;
   lipidsourcelist: any;
-  lipidPercentlist: any;
+  aassourcelist: any;
+  dextrosesourcelist: any;
 
   weightunits: any;
   lenghthunits: any;
@@ -71,7 +72,8 @@ export class UserPreferenceComponent implements OnInit {
       this.energyequationlist = Macrotable.energyequation;
       this.carbsourcelist = Macrotable.carbsource;
       this.lipidsourcelist = Macrotable.lipidsource;
-      this.lipidPercentlist = Macrotable.lipidPercent;
+      this.aassourcelist = Macrotable.aassource;
+      this.dextrosesourcelist = Macrotable.dextrosesource;
 
       this.lenghthunits = Unitstable.lenghthunits;
       this.weightunits = Unitstable.weightunits;
@@ -112,7 +114,8 @@ export class UserPreferenceComponent implements OnInit {
       calEquation: [this.energyequationlist.find(x => x.default === '1').longname, Validators.required],
       useGIR: [this.carbsourcelist.find(x => x.default === '1').longname, Validators.required],
       lipidSource: [this.lipidsourcelist.find(x => x.default === '1').longname, Validators.required],
-      lipidPercent: [this.lipidPercentlist.find(x => x.default === '1').longname, Validators.required],
+      aasSource: [this.aassourcelist.find(x => x.default === '1').longname, Validators.required],
+      dextroseSource: [this.dextrosesourcelist.find(x => x.default === '1').longname, Validators.required],
 
       // electrolytes
       sodiumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],

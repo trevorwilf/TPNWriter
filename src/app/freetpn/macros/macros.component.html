@@ -18,7 +18,8 @@
         <br>Protein Goal: {{MacrosInfo.get('proteingoal').value}} - Actual: {{MacrosInfo.get('protein').value}}
         <br>Lipid Goal: {{MacrosInfo.get('lipidsgoal').value}} - Actual: {{MacrosInfo.get('lipids').value}}
         <br>Carb Goal: {{MacrosInfo.get('carbsgoal').value}} - Actual: {{MacrosInfo.get('carbs').value}}
-    </div>
+        <br>mOsm/L (*estimate): {{MacrosInfo.get('mOsm_L').value}}
+      </div>
 </div>
 
 <!-- Carb Source -->
@@ -49,7 +50,17 @@
       </div>
   </div>
 </div>
-
+<div class="d-flex flex-row flex-wrap">
+  <div class="pr-1">
+      <mat-form-field class="medium">
+          <mat-select placeholder="Dextrose Solution" formControlName="dextroseSource">
+              <mat-option *ngFor="let dex of dextrosesourcelist" [value]="dex.name">
+                  {{dex.name}}
+              </mat-option>
+          </mat-select>
+      </mat-form-field>
+  </div>
+</div>
 <!-- Protein Source -->
 <div class="d-flex flex-row flex-wrap">
     <div class="pr-1">
@@ -65,28 +76,19 @@
         </mat-form-field>
     </div>
 </div>
+<div class="d-flex flex-row flex-wrap">
+  <div class="pr-1">
+      <mat-form-field class="medium">
+          <mat-select placeholder="AA Solution" formControlName="aasSource">
+              <mat-option *ngFor="let aas of aassourcelist" [value]="aas.name">
+                  {{aas.name}}
+              </mat-option>
+          </mat-select>
+      </mat-form-field>
+  </div>
+</div>
 
 <!-- Lipid Source -->
-<div class="d-flex flex-row flex-wrap">
-    <div class="pr-1">
-        <mat-form-field class="small">
-            <mat-select placeholder="lipidSource" formControlName="lipidSource">
-                <mat-option *ngFor="let lipids of lipidsourcelist" [value]="lipids.name">
-                    {{lipids.name}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-    </div>
-    <div class="pr-1">
-        <mat-form-field class="units">
-            <mat-select placeholder="lipid %" formControlName="lipidPercent">
-                <mat-option *ngFor="let lipidp of lipidPercentlist" [value]="lipidp.percent">
-                    {{lipidp.percent}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-    </div>
-</div>
 <div class="d-flex flex-row flex-wrap">
     <div class="pr-1">
         <mat-form-field class="small">
@@ -94,6 +96,18 @@
         </mat-form-field>
     </div>
 </div>
+<div class="d-flex flex-row flex-wrap">
+    <div class="pr-1">
+        <mat-form-field class="medium">
+            <mat-select placeholder="Lipid Solution" formControlName="lipidSource">
+                <mat-option *ngFor="let lipids of lipidsourcelist" [value]="lipids.name">
+                    {{lipids.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+
 
 
 </form>

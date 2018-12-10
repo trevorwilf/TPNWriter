@@ -25,5 +25,10 @@ export class MathConversions {
       return weight * fact;
     }
 
+    // fluids - we convert everything to ml for
+    // internal calc.
+    static converttomls(volume: number, fact: number) {
+      return volume * fact;
+    }
 }
 
