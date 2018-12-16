@@ -68,7 +68,7 @@
                           <div *ngIf="macroInfo && macroInfo.required">
                             <i class="fa fa-check-circle-o" aria-hidden="true"></i>
                           </div>
-                        <mat-icon>note_add</mat-icon>
+                          <i class="fas fa-fire"></i>
                     </mat-expansion-panel-header>
                     <app-macros></app-macros>
                 </mat-expansion-panel>
@@ -85,7 +85,7 @@
                           <div *ngIf="electrolyteInfo && electrolyteInfo.required">
                             <i class="fa fa-check-circle-o" aria-hidden="true"></i>
                           </div>
-                        <mat-icon>account_circle</mat-icon>
+                          <i class="fas fa-car-battery"  aria-hidden="true"></i>
                     </mat-expansion-panel-header>
                     <app-electrolyte></app-electrolyte>
                 </mat-expansion-panel>
@@ -100,9 +100,8 @@
                               </mat-panel-description>
                           </div>
                           <div *ngIf="additiveInfo && additiveInfo.required">
-                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                          </div>
-                        <mat-icon>account_circle</mat-icon>
+                        </div>
+                        <i class="fas fa-vial"   aria-hidden="true"></i>
                     </mat-expansion-panel-header>
                     <app-additive></app-additive>
                 </mat-expansion-panel>
