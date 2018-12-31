@@ -50,12 +50,12 @@
     <div class="d-flex flex-row flex-wrap">
         <div class="pr-1">
             <mat-form-field class="medium">
-                <input matInput placeholder="acetate mEq/kg/day (max {{ElectrolyteInfo.get('maxacetate').value}} )" formControlName="acetate" required>
+                <input matInput placeholder="acetate mEq/kg/day (max {{ElectrolyteInfo.get('maxacetatekg').value}})" formControlName="acetate" required>
             </mat-form-field>
         </div>
         <div class="pr-1">
           <mat-form-field class="medium">
-              <input matInput placeholder="Total acetate mEq/day" formControlName="totalacetate" required>
+              <input matInput placeholder="Total acetate mEq/day (max {{ElectrolyteInfo.get('maxacetatetotal').value}})" formControlName="totalacetate" required>
           </mat-form-field>
       </div>
     </div>

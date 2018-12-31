@@ -38,6 +38,7 @@ import { IMacros, Macrotable } from '../../share/DB_Values/macros';
 import { IAdditive, Additivedetail } from '../../share/DB_Values/additives';
 import { Unitstable } from '../../share/DB_Values/Units';
 import { IWriterPrefs } from '../../share/DB_Values/WriterPrefs';
+import { isNullOrUndefined } from 'util';
 
 @Component({
   selector: 'app-electrolyte',
@@ -96,12 +97,21 @@ export class ElectrolyteinfoComponent implements OnInit {
       totalphosphorus: [],
       phosphorusunit: [this.electorlyteunits.find(x => x.id === 2).longname, Validators.required],
       acetate: ['0'],
-      totalacetate: [],
-      maxacetate: [],
+      totalacetate: ['0'],
+      maxacetatekg: [],
+      maxacetatetotal: [],
       acetateunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
       magnesium: ['0'],
       totalmagnesium: [],
       magnesiumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
+
+      NaPhosphate: ['0'],
+      NaAcetate: ['0'],
+      NaChloride: ['0'],
+
+      KPhosphate: ['0'],
+      KAcetate: ['0'],
+      KChloride: ['0'],
 
       required: [false]
     });
@@ -140,41 +150,23 @@ export class ElectrolyteinfoComponent implements OnInit {
 
     this.formData.CurrentFluidsInfo.subscribe(data => {
       this.FluidsInfo = data;
-      if (this.FluidsInfo.dosingWeightkg) {
-        if (this.ElectrolyteInfo.controls['sodium'].value) {
+      if (this.FluidsInfo) {
+        if (this.FluidsInfo.dosingWeightkg) {
+          if (this.ElectrolyteInfo.controls['sodium'].value) {
 
-          let x = MathConversions.roundtoaccuracy(this.ElectrolyteInfo.controls['sodium'].value * this.FluidsInfo.dosingWeightkg);
-          if (x !== this.ElectrolyteInfo.controls['totalsodium'].value) {
-            this.ElectrolyteInfo.controls['totalsodium'].patchValue(x);
+            this.updatetotal(this.ElectrolyteInfo.controls['sodium'].value, 'totalsodium');
+            this.updatetotal(this.ElectrolyteInfo.controls['potassium'].value, 'totalpotassium');
+            this.updatetotal(this.ElectrolyteInfo.controls['calcium'].value, 'totalcalcium');
+            this.updatetotal(this.ElectrolyteInfo.controls['phosphorus'].value, 'totalphosphorus');
+            this.updatetotal(this.ElectrolyteInfo.controls['magnesium'].value, 'totalmagnesium');
+
+            // acetate
+            this.maxacetate();
+            this.getPhosphate();
+            this.getAcetate();
+            this.getChloride();
+
           }
-
-          x = MathConversions.roundtoaccuracy(this.ElectrolyteInfo.controls['potassium'].value * this.FluidsInfo.dosingWeightkg);
-          if (x !== this.ElectrolyteInfo.controls['totalpotassium'].value) {
-            this.ElectrolyteInfo.controls['totalpotassium'].patchValue(x);
-          }
-
-          x = MathConversions.roundtoaccuracy(this.ElectrolyteInfo.controls['calcium'].value * this.FluidsInfo.dosingWeightkg);
-          if (x !== this.ElectrolyteInfo.controls['totalcalcium'].value) {
-            this.ElectrolyteInfo.controls['totalcalcium'].patchValue(x);
-          }
-
-          x = MathConversions.roundtoaccuracy(this.ElectrolyteInfo.controls['phosphorus'].value * this.FluidsInfo.dosingWeightkg);
-          if (x !== this.ElectrolyteInfo.controls['totalphosphorus'].value) {
-            this.ElectrolyteInfo.controls['totalphosphorus'].patchValue(x);
-          }
-
-          x = MathConversions.roundtoaccuracy(this.ElectrolyteInfo.controls['magnesium'].value * this.FluidsInfo.dosingWeightkg);
-          if (x !== this.ElectrolyteInfo.controls['totalmagnesium'].value) {
-            this.ElectrolyteInfo.controls['totalmagnesium'].patchValue(x);
-          }
-
-          // acetate
-          const maxacetate = ((this.ElectrolyteInfo.controls['sodium'].value + this.ElectrolyteInfo.controls['potassium'].value)
-                  - (this.ElectrolyteInfo.controls['phosphorus'].value));
-          if (maxacetate !== this.ElectrolyteInfo.controls['maxacetate'].value) {
-          this.ElectrolyteInfo.controls['maxacetate'].patchValue(x);
-          }
-
         }
       }
     },
@@ -228,16 +220,14 @@ export class ElectrolyteinfoComponent implements OnInit {
         // if source changes, then mosm can change
         if (this.FluidsInfo) {
           if (this.FluidsInfo.dosingWeightkg) {
-            const x = MathConversions.roundtoaccuracy(data * this.FluidsInfo.dosingWeightkg);
-            if (x !== this.ElectrolyteInfo.controls['totalsodium'].value) {
-              this.ElectrolyteInfo.controls['totalsodium'].patchValue(x);
-            }
+            // update kg to total
+            this.updatetotal(data, 'totalsodium');
 
-            const maxacetate = ((data + this.ElectrolyteInfo.controls['potassium'].value)
-                                - (this.ElectrolyteInfo.controls['phosphorus'].value));
-            if (maxacetate !== this.ElectrolyteInfo.controls['maxacetate'].value) {
-              this.ElectrolyteInfo.controls['maxacetate'].patchValue(x);
-            }
+            // acetate
+            this.maxacetate();
+            this.getPhosphate();
+            this.getAcetate();
+            this.getChloride();
 
           }
         }
@@ -252,10 +242,15 @@ export class ElectrolyteinfoComponent implements OnInit {
         // if source changes, then mosm can change
         if (this.FluidsInfo) {
           if (this.FluidsInfo.dosingWeightkg) {
-            const x = MathConversions.roundtoaccuracy(data * this.FluidsInfo.dosingWeightkg);
-            if (x !== this.ElectrolyteInfo.controls['totalpotassium'].value) {
-              this.ElectrolyteInfo.controls['totalpotassium'].patchValue(x);
-            }
+            // update kg to total
+            this.updatetotal(data, 'totalpotassium');
+
+            // acetate
+            this.maxacetate();
+            this.getPhosphate();
+            this.getAcetate();
+            this.getChloride();
+
           }
         }
       },
@@ -269,10 +264,8 @@ export class ElectrolyteinfoComponent implements OnInit {
           // if source changes, then mosm can change
           if (this.FluidsInfo) {
             if (this.FluidsInfo.dosingWeightkg) {
-              const x = MathConversions.roundtoaccuracy(data * this.FluidsInfo.dosingWeightkg);
-              if (x !== this.ElectrolyteInfo.controls['totalcalcium'].value) {
-                this.ElectrolyteInfo.controls['totalcalcium'].patchValue(x);
-              }
+              // update kg to total
+              this.updatetotal(data, 'totalcalcium');
             }
           }
         },
@@ -286,10 +279,15 @@ export class ElectrolyteinfoComponent implements OnInit {
           // if source changes, then mosm can change
           if (this.FluidsInfo) {
             if (this.FluidsInfo.dosingWeightkg) {
-              const x = MathConversions.roundtoaccuracy(data * this.FluidsInfo.dosingWeightkg);
-              if (x !== this.ElectrolyteInfo.controls['totalphosphorus'].value) {
-                this.ElectrolyteInfo.controls['totalphosphorus'].patchValue(x);
-              }
+              // update kg to total
+              this.updatetotal(data, 'totalphosphorus');
+
+              // acetate
+              this.maxacetate();
+              this.getPhosphate();
+              this.getAcetate();
+              this.getChloride();
+
             }
           }
         },
@@ -303,10 +301,12 @@ export class ElectrolyteinfoComponent implements OnInit {
           // if source changes, then mosm can change
           if (this.FluidsInfo) {
             if (this.FluidsInfo.dosingWeightkg) {
-              const x = MathConversions.roundtoaccuracy(data * this.FluidsInfo.dosingWeightkg);
-              if (x !== this.ElectrolyteInfo.controls['totalacetate'].value) {
-                this.ElectrolyteInfo.controls['totalacetate'].patchValue(x);
-              }
+              // update kg to total
+              this.updatetotal(data, 'totalacetate');
+              this.maxacetate();
+              this.getPhosphate();
+              this.getAcetate();
+              this.getChloride();
             }
           }
         },
@@ -320,10 +320,8 @@ export class ElectrolyteinfoComponent implements OnInit {
           // if source changes, then mosm can change
           if (this.FluidsInfo) {
             if (this.FluidsInfo.dosingWeightkg) {
-              const x = MathConversions.roundtoaccuracy(data * this.FluidsInfo.dosingWeightkg);
-              if (x !== this.ElectrolyteInfo.controls['totalmagnesium'].value) {
-                this.ElectrolyteInfo.controls['totalmagnesium'].patchValue(x);
-              }
+              // update kg to total
+              this.updatetotal(data, 'totalmagnesium');
             }
           }
         },
@@ -341,6 +339,96 @@ export class ElectrolyteinfoComponent implements OnInit {
     // this.formData.CurrentElectrolyteInfo.map(x => console.log(x));
   }
 
+  updatetotal(perkg: number, total: string): void {
+    const x = MathConversions.roundtoaccuracy(perkg * this.FluidsInfo.dosingWeightkg);
+    if (x !== this.ElectrolyteInfo.controls[total].value) {
+      this.ElectrolyteInfo.controls[total].patchValue(x);
+    }
+  }
+
+  maxacetate(): void {
+    const macetatetotal = ((this.ElectrolyteInfo.controls['totalsodium'].value + this.ElectrolyteInfo.controls['totalpotassium'].value)
+        - (this.ElectrolyteInfo.controls['totalphosphorus'].value));
+    const macetatekg = macetatetotal / this.FluidsInfo.dosingWeightkg;
+
+    if (macetatekg !== this.ElectrolyteInfo.controls['maxacetatekg'].value) {
+      this.ElectrolyteInfo.controls['maxacetatekg'].patchValue(macetatekg);
+      this.ElectrolyteInfo.controls['maxacetatetotal'].patchValue(macetatetotal);
+    }
+
+    if (macetatetotal !== this.ElectrolyteInfo.controls['maxacetatetotal'].value) {
+      this.ElectrolyteInfo.controls['maxacetatekg'].patchValue(macetatekg);
+      this.ElectrolyteInfo.controls['maxacetatetotal'].patchValue(macetatetotal);
+    }
+
+    if (macetatekg < this.ElectrolyteInfo.controls['acetate'].value) {
+      this.ElectrolyteInfo.controls['acetate'].patchValue(macetatekg);
+    }
+    if (macetatetotal < this.ElectrolyteInfo.controls['totalacetate'].value) {
+      this.ElectrolyteInfo.controls['totalacetate'].patchValue(macetatetotal);
+    }
+  }
+
+  getPhosphate(): void {
+    const sodiumtotal = this.ElectrolyteInfo.controls['totalsodium'].value;
+    const totalpotassium = this.ElectrolyteInfo.controls['totalpotassium'].value;
+    const phosphatetotal = this.ElectrolyteInfo.controls['totalphosphorus'].value;
+
+    // 1 mmol NaPhos = 1.33 mEq Na+
+    // 1/1.33 = .75
+    const NaPhosph = MathConversions.roundtoaccuracy(Math.min(sodiumtotal, 1.33 * phosphatetotal));
+    if (NaPhosph !== this.ElectrolyteInfo.controls['NaPhosphate'].value) {
+      this.ElectrolyteInfo.controls['NaPhosphate'].patchValue(NaPhosph);
+    }
+    // 1 mmol KPhos = 1.47 mEq K+
+    // 1/1.47 = .68
+    const KPhosph = MathConversions.roundtoaccuracy((phosphatetotal - (sodiumtotal * 0.75)) / 0.68);
+    if (KPhosph !== this.ElectrolyteInfo.controls['KPhosphate'].value) {
+      this.ElectrolyteInfo.controls['KPhosphate'].patchValue(NaPhosph);
+    }
+
+  }
+
+  getAcetate(): void {
+    const sodiumtotal = this.ElectrolyteInfo.controls['totalsodium'].value;
+    const NaPhosph = this.ElectrolyteInfo.controls['NaPhosphate'].value;
+    const acetatetotal = this.ElectrolyteInfo.controls['totalacetate'].value;
+
+    const NaAcetate = MathConversions.roundtoaccuracy(Math.min(sodiumtotal - NaPhosph, acetatetotal), 2);
+    if (NaAcetate !== this.ElectrolyteInfo.controls['NaAcetate'].value) {
+      this.ElectrolyteInfo.controls['NaAcetate'].patchValue(NaAcetate);
+    }
+
+    const totalpotassium = this.ElectrolyteInfo.controls['totalpotassium'].value;
+    const KPhosph = this.ElectrolyteInfo.controls['KPhosphate'].value;
+
+    const KAcetate = MathConversions.roundtoaccuracy(Math.min(acetatetotal - NaAcetate, acetatetotal), 2);
+    if (KAcetate !== this.ElectrolyteInfo.controls['KAcetate'].value) {
+      this.ElectrolyteInfo.controls['KAcetate'].patchValue(KAcetate);
+    }
+
+  }
+
+  getChloride(): void {
+    const sodiumtotal = this.ElectrolyteInfo.controls['totalsodium'].value;
+    const totalpotassium = this.ElectrolyteInfo.controls['totalpotassium'].value;
+
+    // get NACl
+    const NaCL = MathConversions.roundtoaccuracy(sodiumtotal -
+                this.ElectrolyteInfo.controls['NaPhosphate'].value -
+                this.ElectrolyteInfo.controls['NaAcetate'].value, 2);
+    if (NaCL !== this.ElectrolyteInfo.controls['NaChloride'].value) {
+      this.ElectrolyteInfo.controls['NaChloride'].patchValue(NaCL);
+    }
+
+    // get KCl
+    const kCL = MathConversions.roundtoaccuracy(totalpotassium -
+                this.ElectrolyteInfo.controls['KPhosphate'].value -
+                this.ElectrolyteInfo.controls['KAcetate'].value, 2);
+    if (kCL !== this.ElectrolyteInfo.controls['KChloride'].value) {
+      this.ElectrolyteInfo.controls['KChloride'].patchValue(kCL);
+    }
+  }
 
   hasFormErrors() {
     return !this.ElectrolyteInfo.valid;

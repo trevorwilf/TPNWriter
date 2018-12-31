@@ -39,11 +39,21 @@ export interface IElectrolyte {
   phosphorusunit: string;
   acetate: number;
   totalacetate: number;
-  maxacetate: number;
+  maxacetatekg: number;
+  maxacetatetotal: number;
   acetateunit: string;
   magnesium: number;
   totalmagnesium: number;
   magnesiumunit: string;
+
+  NaPhosphate: number;
+  NaAcetate: number;
+  NaChloride: number;
+
+  KPhosphate: number;
+  KAcetate: number;
+  KChloride: number;
+
   notes: string;
 
   required: boolean;
