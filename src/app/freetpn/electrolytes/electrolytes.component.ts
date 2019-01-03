@@ -86,23 +86,34 @@ export class ElectrolyteinfoComponent implements OnInit {
     this.ElectrolyteInfo = this._formBuilder.group({
       sodium: ['0'],
       totalsodium: [],
+      withfeedssodium: [],
       sodiumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
+
       potassium: ['0'],
       totalpotassium: [],
+      withfeedspotassium: [],
       potassiumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
+
       calcium: ['0'],
       totalcalcium: [],
+      withfeedscalcium: [],
       calciumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
+
       phosphorus: ['0'],
       totalphosphorus: [],
+      withfeedsphosphorus: [],
       phosphorusunit: [this.electorlyteunits.find(x => x.id === 2).longname, Validators.required],
+
       acetate: ['0'],
-      totalacetate: ['0'],
+      totalacetate: [],
+      withfeedsacetate: [],
       maxacetatekg: [],
       maxacetatetotal: [],
       acetateunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
+
       magnesium: ['0'],
       totalmagnesium: [],
+      withfeedsmagnesium: [],
       magnesiumunit: [this.electorlyteunits.find(x => x.default === '1').longname, Validators.required],
 
       NaPhosphate: ['0'],

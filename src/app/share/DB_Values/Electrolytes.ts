@@ -27,23 +27,34 @@ export interface Electrolytedetail {
 export interface IElectrolyte {
   sodium: number;
   totalsodium: number;
+  withfeedssodium: number;
   sodiumunit: string;
+
   potassium: number;
   totalpotassium: number;
+  withfeedspotassium: number;
   potassiumunit: string;
+
   calcium: number;
   totalcalcium: number;
+  withfeedscalcium: number;
   calciumunit: string;
+
   phosphorus: number;
   totalphosphorus: number;
+  withfeedsphosphorus: number;
   phosphorusunit: string;
+
   acetate: number;
   totalacetate: number;
+  withfeedsacetate: number;
   maxacetatekg: number;
   maxacetatetotal: number;
   acetateunit: string;
+
   magnesium: number;
   totalmagnesium: number;
+  withfeedsmagnesium: number;
   magnesiumunit: string;
 
   NaPhosphate: number;

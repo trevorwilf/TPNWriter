@@ -1,5 +1,16 @@
 <form [formGroup]="ElectrolyteInfo">
     <div class="d-flex flex-row flex-wrap">
+        <div class="pr-1" style="width: 150px;">
+          x per kg per day
+        </div>
+        <div class="pr-1" style="width: 150px;">
+          x per day
+      </div>
+      <div class="pr-1" style="width: 150px;">
+          Total with feeds
+    </div>
+    </div>
+    <div class="d-flex flex-row flex-wrap">
         <div class="pr-1">
             <mat-form-field class="medium">
                 <input matInput placeholder="Sodium mEq/kg/day" formControlName="sodium" required>
@@ -8,6 +19,11 @@
         <div class="pr-1">
           <mat-form-field class="medium">
               <input matInput placeholder="Total NA mEq/day" formControlName="totalsodium" required>
+          </mat-form-field>
+      </div>
+      <div class="pr-1">
+          <mat-form-field class="medium">
+              <input matInput placeholder="Total with feeds NA mEq/day" formControlName="withfeedssodium" required>
           </mat-form-field>
       </div>
     </div>
@@ -22,6 +38,11 @@
               <input matInput placeholder="Total K  mEq/day" formControlName="totalpotassium" required>
           </mat-form-field>
       </div>
+      <div class="pr-1">
+          <mat-form-field class="medium">
+              <input matInput placeholder="Total with feeds K mEq/day" formControlName="withfeedspotassium" required>
+          </mat-form-field>
+      </div>
     </div>
     <div class="d-flex flex-row flex-wrap">
         <div class="pr-1">
@@ -32,6 +53,11 @@
         <div class="pr-1">
           <mat-form-field class="medium">
               <input matInput placeholder="Total Ca  mEq/day" formControlName="totalcalcium" required>
+          </mat-form-field>
+      </div>
+      <div class="pr-1">
+          <mat-form-field class="medium">
+              <input matInput placeholder="Total with feeds Ca mEq/day" formControlName="withfeedscalcium" required>
           </mat-form-field>
       </div>
     </div>
@@ -46,28 +72,43 @@
               <input matInput placeholder="Total Ph mMol/day" formControlName="totalphosphorus" required>
           </mat-form-field>
       </div>
-    </div>
-    <div class="d-flex flex-row flex-wrap">
-        <div class="pr-1">
-            <mat-form-field class="medium">
-                <input matInput placeholder="acetate mEq/kg/day (max {{ElectrolyteInfo.get('maxacetatekg').value}})" formControlName="acetate" required>
-            </mat-form-field>
-        </div>
-        <div class="pr-1">
+      <div class="pr-1">
           <mat-form-field class="medium">
-              <input matInput placeholder="Total acetate mEq/day (max {{ElectrolyteInfo.get('maxacetatetotal').value}})" formControlName="totalacetate" required>
+              <input matInput placeholder="Total with feeds Ph mEq/day" formControlName="withfeedsphosphorus" required>
           </mat-form-field>
       </div>
     </div>
     <div class="d-flex flex-row flex-wrap">
-        <div class="pr-1">
-            <mat-form-field class="medium">
-                <input matInput placeholder="magnesium mEq/kg/day" formControlName="magnesium" required>
-            </mat-form-field>
-        </div>
-        <div class="pr-1">
+      <div class="pr-1">
           <mat-form-field class="medium">
-              <input matInput placeholder="Total Mg mEq/day" formControlName="totalmagnesium" required>
+              <input matInput placeholder="acetate mEq/kg/day (max {{ElectrolyteInfo.get('maxacetatekg').value}})" formControlName="acetate" required>
+          </mat-form-field>
+      </div>
+      <div class="pr-1">
+        <mat-form-field class="medium">
+            <input matInput placeholder="Total acetate mEq/day (max {{ElectrolyteInfo.get('maxacetatetotal').value}})" formControlName="totalacetate" required>
+        </mat-form-field>
+      </div>
+      <div class="pr-1">
+          <mat-form-field class="medium">
+              <input matInput placeholder="Total with feeds acetate mEq/day" formControlName="withfeedsacetate" required>
+          </mat-form-field>
+        </div>
+    </div>
+    <div class="d-flex flex-row flex-wrap">
+      <div class="pr-1">
+          <mat-form-field class="medium">
+              <input matInput placeholder="magnesium mEq/kg/day" formControlName="magnesium" required>
+          </mat-form-field>
+      </div>
+      <div class="pr-1">
+        <mat-form-field class="medium">
+            <input matInput placeholder="Total Mg mEq/day" formControlName="totalmagnesium" required>
+        </mat-form-field>
+      </div>
+      <div class="pr-1">
+          <mat-form-field class="medium">
+              <input matInput placeholder="Total with feeds  Mg mEq/day" formControlName="withfeedsmagnesium" required>
           </mat-form-field>
       </div>
     </div>
