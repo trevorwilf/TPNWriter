@@ -1,6 +1,7 @@
 # TPNWriter
 
 This is very much a work in progress.  Please do not implement it as it could cause harm to patients.
+I have uploaded this as code sample for Angular, I recognize that the keys have been uploaded.  Fear not, they no longer work :)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.4.
 
