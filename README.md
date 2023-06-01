@@ -5,6 +5,14 @@ I have uploaded this as code sample for Angular, I recognize that the keys have 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.4.
 
+# License Information
+Creative Commons Attribution-NonCommercial-NoDerivs - 
+CC BY-NC-ND: This license allows reusers to copy and distribute the material in any medium or format in unadapted form only, for noncommercial purposes only, and only so long as attribution is given to the creator. 
+CC BY-NC-ND includes the following elements:
+BY  – Credit must be given to the creator
+NC  – Only noncommercial uses of the work are permitted
+ND  – No derivatives or adaptations of the work are permitted
+
 # Node Version
 
 The current Node version is 8.11.3
